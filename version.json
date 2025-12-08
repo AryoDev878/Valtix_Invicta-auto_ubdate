@@ -1,6 +1,14 @@
 {
-  "version": "1.0.0",
-  "download_url": "https://raw.githubusercontent.com/AryoDev878/Valtix_Invicta-auto_ubdate/refs/heads/main/bot.js",
-  "changelog": "Initial release - Valtix Invicta Auto Update System",
-  "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  "version": "3.0",
+  "release_date": "2025-01-15T12:00:00Z",
+  "download_url": "https://github.com/AryoDev878/Valtix_Invicta-auto_ubdate/releases/download/v3.0/v3.0.zip",
+  "changelog": "- Initial release Valtix Invicta v3.0\n- Full bug attack system\n- Telegram + WhatsApp integration\n- Premium & admin system\n- OSINT tools included",
+  "checksum": "GENERATE_INI_NANTI",
+  "min_node_version": "18.0.0",
+  "file_structure": [
+    "ValtixInvicta.js",
+    "config.js",
+    "package.json",
+    "犬/"
+  ]
 }
