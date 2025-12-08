@@ -3521,3 +3521,121 @@ bot.onText(/\/tourl/i, async (msg) => {
         bot.sendMessage(chatId, "❌ Gagal mengupload file ke Catbox");
     }
 });
+// ==================== AUTO UPDATE SYSTEM ====================
+// Tambahkan ini di paling bawah file V2Jarzx.js
+
+const UPDATE_CONFIG = {
+  url: "https://raw.githubusercontent.com/AryoDev878/Valtix_Invicta-auto_ubdate/refs/heads/main/version.json",
+  scriptPath: path.resolve(__dirname, "V2Jarzx.js"),
+  backupDir: path.resolve(__dirname, "backups")
+};
+
+// Buat folder backup kalau belum ada
+if (!fs.existsSync(UPDATE_CONFIG.backupDir)) {
+  fs.mkdirSync(UPDATE_CONFIG.backupDir, { recursive: true });
+}
+
+bot.onText(/^\/ubdatenew$/, async (msg) => {
+  const chatId = msg.chat.id;
+  const senderId = msg.from.id;
+
+  // Cek owner (pakai sistem yang ada)
+  if (!isOwner(senderId)) {
+    return bot.sendMessage(chatId, "❌ Hanya owner yang bisa update!");
+  }
+
+  let statusMsg;
+  try {
+    statusMsg = await bot.sendMessage(chatId, "⏳ *Mengecek update...*", {
+      parse_mode: "Markdown"
+    });
+
+    // Step 1: Cek versi remote
+    await bot.editMessageText("🔍 Cek versi terbaru...", {
+      chat_id: chatId,
+      message_id: statusMsg.message_id
+    });
+
+    const { data: remote } = await axios.get(UPDATE_CONFIG.url, { timeout: 10000 });
+    const localVersion = JSON.parse(fs.readFileSync("./package.json")).version || "1.0.0";
+
+    if (remote.version === localVersion) {
+      return bot.editMessageText("✅ Sudah versi terbaru!", {
+        chat_id: chatId,
+        message_id: statusMsg.message_id
+      });
+    }
+
+    // Step 2: Backup
+    await bot.editMessageText("💾 Backup file...", {
+      chat_id: chatId,
+      message_id: statusMsg.message_id
+    });
+
+    const backupPath = path.join(UPDATE_CONFIG.backupDir, `backup_${Date.now()}.js`);
+    fs.copyFileSync(UPDATE_CONFIG.scriptPath, backupPath);
+
+    // Step 3: Download & verify
+    await bot.editMessageText("📥 Download update...", {
+      chat_id: chatId,
+      message_id: statusMsg.message_id
+    });
+
+    const { data: newScript } = await axios.get(remote.download_url, { timeout: 30000 });
+
+    // Verify checksum
+    const hash = crypto.createHash("sha256").update(newScript).digest("hex");
+    if (hash !== remote.checksum) {
+      throw new Error("Checksum tidak valid!");
+    }
+
+    // Step 4: Install
+    await bot.editMessageText("🔄 Install update...", {
+      chat_id: chatId,
+      message_id: statusMsg.message_id
+    });
+
+    fs.writeFileSync(UPDATE_CONFIG.scriptPath, newScript, "utf-8");
+
+    // Update package.json
+    const pkg = JSON.parse(fs.readFileSync("./package.json"));
+    pkg.version = remote.version;
+    fs.writeFileSync("./package.json", JSON.stringify(pkg, null, 2));
+
+    // Step 5: Restart
+    await bot.editMessageText("🚀 Restart bot...", {
+      chat_id: chatId,
+      message_id: statusMsg.message_id
+    });
+
+    // Restart method detection
+    const { exec } = require("child_process");
+    
+    // Cek jika pakai PM2
+    exec("pm2 list", (err, stdout) => {
+      if (!err && stdout.includes("V2Jarzx")) {
+        return exec("pm2 restart V2Jarzx");
+      }
+      
+      // Cek systemd
+      exec("systemctl is-active bot", (err2) => {
+        if (!err2) {
+          return exec("systemctl restart bot");
+        }
+        
+        // Fallback
+        bot.sendMessage(chatId, "✅ Update selesai! Restart manual: npm start");
+        process.exit(0);
+      });
+    });
+
+  } catch (error) {
+    console.error("Update Error:", error);
+    bot.editMessageText(
+      `❌ Update Gagal!\n${error.message}`,
+      { chat_id: chatId, message_id: statusMsg.message_id }
+    );
+  }
+});
+
+// ==================== END AUTO UPDATE ====================
