@@ -1174,7 +1174,8 @@ bot.on("callback_query", async (query) => {
       replyMarkup = { inline_keyboard: [[{ text: "<<<<", callback_data: "back" }]] };
     } 
     else if (query.data === "FF") {
-      caption = `<pre>╭━───━⊱ 𝐊𝐇𝐔𝐒𝐔𝐒 𝐎𝐖𝐍𝐄𝐑 ⊰━───━╮</pre>
+      caption = `\`\`\`
+╭━───━⊱ 𝐊𝐇𝐔𝐒𝐔𝐒 𝐎𝐖𝐍𝐄𝐑 ⊰━───━╮
 ┃⟜❏ /addowner &lt;ɪᴅ&gt;
 ┃⟜❏ /delowner &lt;ɪᴅ&gt;
 ┃⟜❏ /ubdatenew
@@ -1192,11 +1193,12 @@ bot.on("callback_query", async (query) => {
 ┃⟜❏ /setjeda &lt;ᴛɪᴍᴇ&gt;
 ┃⟜❏ /getsession &lt;ᴍᴀʟɪɴɢ sᴇɴᴅᴇʀ&gt;
 ┃⟜❏ /grouponly &lt; ᴏɴ/ᴏғғ &gt;
-╰━───────╯`;
+╰━───────╯\`\`\``;
       replyMarkup = { inline_keyboard: [[{ text: "<<<<", callback_data: "back" }]] };
     }
     else if (query.data === "TOL") {
-      caption = `<pre>╭━───━⊱ 𝐓𝐨𝐨𝐥𝐬 𝐌𝐞𝐧𝐮 𝟏 ⊰━───━╮</pre>
+      caption =`\`\`\`
+╭━───━⊱ 𝐓𝐨𝐨𝐥𝐬 𝐌𝐞𝐧𝐮 𝟏 ⊰━───━╮
 ┃⟜❏ /tiktok &lt;ʟɪɴᴋ ᴛɪᴋᴛᴏᴋ&gt;
 ┃⟜❏ /tourl &lt;ʀᴇᴘʟʏ ғᴏᴛᴏ / ᴠɪᴅ&gt;
 ┃⟜❏ /cekid
@@ -1213,11 +1215,12 @@ bot.on("callback_query", async (query) => {
 ┃⟜❏ /cekkontol
 ╰━───────╯
 ╭━───━⊱ 𝐍𝐈𝐊𝐌𝐀𝐓𝐈𝐍 ⊰
-╰━────────────────────────━❏`;
+╰━────────────────────────━❏\`\`\``;
       replyMarkup = { inline_keyboard: [[{ text: "<<<<", callback_data: "back" }]] };
     }
     else if (query.data === "zentools2") {
-      caption = `<pre>╭━───━⊱ 𝐌𝐞𝐧𝐮 𝐓𝐨𝐨𝐥𝐬 𝟐 ⊰━───━╮</pre>
+      caption =`\`\`\`
+╭━───━⊱ 𝐌𝐞𝐧𝐮 𝐓𝐨𝐨𝐥𝐬 𝟐 ⊰━───━╮
 ┃⟜❏ /ig
 ┃⟜❏ /cekcantik
 ┃⟜❏ /cekganteng
@@ -1236,11 +1239,11 @@ bot.on("callback_query", async (query) => {
 ┃⟜❏ /ghstalk
 ╰━───────╯
 ╭━───━⊱ 𝐍𝐈𝐊𝐌𝐀𝐓𝐈𝐍 ⊰
-╰━────────────────────────━❏`;
+╰━────────────────────────━❏\`\`\``;
       replyMarkup = { inline_keyboard: [[{ text: "<<<<", callback_data: "back" }]] };
     }
     else if (query.data === "thanksto") {
-      caption = `<pre>╭━───━⊱ ⊱⪩ 𝙏𝙃𝘼𝙉𝙆𝙎 𝙏𝙊 𝘼𝙇𝙇 ⪨⊰</pre>
+      caption = `\`\`\`╭━───━⊱ ⊱⪩ 𝙏𝙃𝘼𝙉𝙆𝙎 𝙏𝙊 𝘼𝙇𝙇 ⪨⊰</pre>
 ┃ Ryoo — Lead Developer
 ┃   ↳ Pencipta sistem bot, konsep, dan arsitektur utama
 ┃
@@ -1252,7 +1255,7 @@ bot.on("callback_query", async (query) => {
 ┃
 ┃ Buyer, User, & Community
 ┃   ↳ Alasan project ini terus hidup dan berkembang 
-╰━─────────────────────────━❏`;
+╰━─────────────────────────━❏\`\`\``;
       replyMarkup = { inline_keyboard: [[{ text: "<<<<", callback_data: "back" }]] };
     }
     else if (query.data === "back") {
@@ -1317,7 +1320,6 @@ bot.on("callback_query", async (query) => {
     );
 
     await bot.answerCallbackQuery(query.id);
-    console.log("✅ CALLBACK SUCCESS:", query.data);
 
   } catch (error) {
     // 🔴 TAMPILKAN ERROR YANG SEBENARNYA
