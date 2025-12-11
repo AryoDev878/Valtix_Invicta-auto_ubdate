@@ -160,12 +160,11 @@ const BOT_TOKEN = config.BOT_TOKEN;
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 // ===== UPDATE SYSTEM - NO BACKUP =====
 const https = require("https");
-const crypto = require("crypto");
 
 // KONFIGURASI UPDATE SYSTEM (WAJIB GANTI URL INI!)
 const UPDATE_CONFIG = {
-    GITHUB_RAW_URL: "https://raw.githubusercontent.com/USERNAME/REPO/main/bot.js", 
-    GITHUB_VERSION_URL: "https://raw.githubusercontent.com/USERNAME/REPO/main/version.json",
+    GITHUB_RAW_URL: "https://raw.githubusercontent.com/AryoDev878/Valtix_Invicta-auto_ubdate/refs/heads/main/bot.js", 
+    GITHUB_VERSION_URL: "https://raw.githubusercontent.com/AryoDev878/Valtix_Invicta-auto_ubdate/refs/heads/main/version.json",
     AUTO_CHECK_INTERVAL: 30 * 60 * 1000, // 30 menit sekali cek
 };
 // ===== END UPDATE SYSTEM CONFIG =====
@@ -555,7 +554,7 @@ async function tiktokDl(url) {
 
 function getRandomImage() {
   const images = [
-    "https://files.catbox.moe/fvv8yj.jpg"
+    "https://files.catbox.moe/p2jg7w.mp4"
   ];
   return images[Math.floor(Math.random() * images.length)];
 }
@@ -1344,9 +1343,9 @@ bot.onText(/\/menu/, async (msg) => {
   }
 
 // TAMPILKAN MENU UTAMA TANPA PROGRESS BAR
-await bot.sendPhoto(
+await bot.sendVideo(
   chatId,
-  "https://files.catbox.moe/fvv8yj.jpg",
+  "https://files.catbox.moe/p2jg7w.mp4",
   {
     caption: `
 \`\`\`
@@ -1449,6 +1448,9 @@ bot.on("callback_query", async (query) => {
 ┃
 ┃⟜❏ /delowner <id>
 ┃      ↳ Menghapus akses Owner dari ID tertentu
+┃
+┃⟜❏ /ubdatenew 
+┃      ↳ auto ubdate ke versi terbaru
 ╰━──────────────────────────━❏
 
 ╭━───━⊱ ⊱⪩ 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗠𝗘𝗡𝗨 ⪨⊰
@@ -1606,8 +1608,8 @@ bot.on("callback_query", async (query) => {
 
     await bot.editMessageMedia(
       {
-        type: "photo",
-        media:  "https://files.catbox.moe/fvv8yj.jpg",
+        type: "vidio",
+        media:  "https://files.catbox.moe/p2jg7w.mp4",
         
         caption: caption,
         parse_mode: "Markdown"
