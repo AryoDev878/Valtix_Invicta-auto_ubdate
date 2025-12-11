@@ -154,6 +154,39 @@ watchFile('./犬/admin.json', (data) => (adminUsers = data));
 
 const chalk = require("chalk"); //
 const config = require("./config.js");
+// =========================================
+// AUTO INSTALL MODULE + KUMIS WARNA-WARNI
+// =========================================
+import { execSync } from "child_process";
+import fs from "fs";
+
+function ensure(moduleName) {
+  try {
+    require.resolve(moduleName);
+  } catch {
+    execSync(`npm install ${moduleName}`, { stdio: "ignore" });
+  }
+}
+
+ensure("chalk");
+ensure("gradient-string");
+
+import chalk from "chalk";
+import gradient from "gradient-string";
+
+function startBot() {
+  const art = `
+  ⠀⢀⣠⣄⡀⠀⠀⠀⣠⣶⣾⣿⣿⣶⣦⣴⣾⣿⣿⣷⣦⣄⠀⠀⠀⢀⣠⣄⡀⠀
+  ⣰⣿⠟⠛⢻⡆⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣷⡄⢰⠟⠛⢻⣿⡆
+  ⢻⣿⣦⣀⣤⣾⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣦⣤⣀⣼⣿⡇
+  ⠀⠛⠿⢿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⢿⣿⣿⡿⠿⠋
+  `;
+
+  console.log(gradient.rainbow.multiline(art));
+}
+
+startBot();
+// =========================================
 const TelegramBot = require("node-telegram-bot-api");
 const axios = require("axios");
 const BOT_TOKEN = config.BOT_TOKEN;
@@ -196,18 +229,6 @@ console.log(chalk.green('# Token aman lanjut aja,gw pantau   '));
 }
 
 
-startBot();
-
-function startBot() {
-  console.log(
-    chalk.bold.magenta(`
-${chalk.red("⠀⢀⣠⣄⡀")}       ${chalk.cyan("⣠⣶⣾⣿⣿⣶⣦⣴⣾⣿⣿⣷⣦⣄")}       ${chalk.red("⢀⣠⣄⡀⠀")}
-${chalk.yellow("⣰⣿⠟⠛⢻⡆")}   ${chalk.green("⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣷⡄")}   ${chalk.yellow("⢰⠟⠛⢻⣿⡆")}
-${chalk.blue("⢻⣿⣦⣀⣤⣾⣿")} ${chalk.magenta("⣿⣿⣿⣿⣿⠟⠋⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣦⣤⣀")} ${chalk.blue("⣼⣿⡇")}
-${chalk.green("⠀⠛⠿⢿⣿⣿")}   ${chalk.red("⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⢿⣿⣿⡿⠿⠋⠀")}
-`)
-  );
-}
 
 
 validateToken();
