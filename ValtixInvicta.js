@@ -152,7 +152,7 @@ function watchFile(filePath, updateCallback) {
 watchFile('./犬/premium.json', (data) => (premiumUsers = data));
 watchFile('./犬/admin.json', (data) => (adminUsers = data));
 
-import { execSync } from "child_process";
+const { execSync } = require("child_process");
 
 function ensure(moduleName) {
   try { require.resolve(moduleName); }
