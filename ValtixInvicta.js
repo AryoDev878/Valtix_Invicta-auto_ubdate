@@ -209,6 +209,7 @@ ${chalk.green("⠀⠛⠿⢿⣿⣿")}   ${chalk.red("⡿⠿⠟⠛⠉⠀⠀⠀⠀�
   );
 }
 
+
 validateToken();
 
 let sock;
@@ -1373,15 +1374,15 @@ await bot.sendVideo(
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "⊱ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ⊰", callback_data: "ownmenu" },
-          { text: "⊱ 𝗔𝘁𝘁𝗮𝗰𝗸 ⊰", callback_data: "bug" }
+          { text: "𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂", callback_data: "ownmenu" },
+          { text: "𝗔𝘁𝘁𝗮𝗰𝗸", callback_data: "bug" }
         ],
         [
-          { text: "⊱ 𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂 ⊰", callback_data: "tools" },
-          { text: "⊱ 𝗠𝘆 𝗧𝗲𝗮𝗺 ⊰", callback_data: "thanksto" }
+          { text: "𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂", callback_data: "tools" },
+          { text: "𝗠𝘆 𝗧𝗲𝗮𝗺", callback_data: "thanksto" }
         ],
         [
-          { text: "⊱ 𝗢𝗦𝗜𝗡𝗧 ⊰", callback_data: "tools2" }
+          { text: "𝗢𝗦𝗜𝗡𝗧", callback_data: "tools2" }
         ]
       ]
     }
@@ -1400,8 +1401,6 @@ try {
 
 }); 
 
-
-
 bot.on("callback_query", async (query) => {
   try {
     const chatId = query.message.chat.id;
@@ -1418,8 +1417,10 @@ bot.on("callback_query", async (query) => {
     let caption = "";
     let replyMarkup = {};
 
+    // ================== BUG MENU ==================
     if (query.data === "bug") {
-      caption = `\`\`\`
+      caption = `
+<pre>
 ╭━─━─━─━─━─━─━─━─━─
 ┃❏ 𝗠𝗲𝗻𝘂 𝗕𝘂𝗴 ❏
 ┃ ╰ 〆 crash✗ 
@@ -1436,186 +1437,206 @@ bot.on("callback_query", async (query) => {
 ┃   ┗⊱ /vtxDarkFreeze 62×××
 ┃
 ╰━─━─━─━─━─━─━─━─━─❏
-\`\`\``;
+</pre>`;
       replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
     }
 
+    // ================== OWNER MENU ==================
     if (query.data === "ownmenu") {
-      caption = `\`\`\`
+      caption = `
+<pre>
 ╭━───━⊱ ⊱⪩ 𝗢𝗪𝗡𝗘𝗥 𝗠𝗘𝗡𝗨 ⪨⊰
-┃⟜❏ /addowner <id>
+┃⟜❏ /addowner &lt;id&gt;
 ┃      ↳ Menambahkan Owner baru ke dalam sistem bot
 ┃
-┃⟜❏ /delowner <id>
+┃⟜❏ /delowner &lt;id&gt;
 ┃      ↳ Menghapus akses Owner dari ID tertentu
 ┃
 ┃⟜❏ /ubdatenew 
-┃      ↳ auto ubdate ke versi terbaru
+┃      ↳ Auto update ke versi terbaru
 ╰━──────────────────────────━❏
 
 ╭━───━⊱ ⊱⪩ 𝗣𝗥𝗘𝗠𝗜𝗨𝗠 𝗠𝗘𝗡𝗨 ⪨⊰
-┃⟜❏ /addprem <id>
-┃      ↳ Memberikan akses Premium ke user tertentu
+┃⟜❏ /addprem &lt;id&gt;
+┃      ↳ Memberikan akses Premium
 ┃
-┃⟜❏ /delprem <id>
+┃⟜❏ /delprem &lt;id&gt;
 ┃      ↳ Menghapus status Premium pengguna
 ┃
 ┃⟜❏ /listprem
 ┃      ↳ Melihat daftar user Premium & masa aktif
 ┃
-┃⟜❏ /chatowner <pesan>
-┃      ↳ Mengirim pesan langsung ke Owner melalui bot
+┃⟜❏ /chatowner &lt;pesan&gt;
+┃      ↳ Kirim pesan ke Owner
 ╰━──────────────────────────━❏
 
 ╭━───━⊱ ⊱⪩ 𝗦𝗘𝗧𝗧𝗜𝗡𝗚 𝗠𝗘𝗡𝗨 ⪨⊰
 ┃⟜❏ /addsender 62xxxxx
-┃      ↳ Menambahkan nomor / ID pengirim yang diizinkan
+┃      ↳ Menambah nomor yang diizinkan
 ┃
-┃⟜❏ /setjeda <time>
-┃      ↳ Mengatur delay jeda pengiriman pesan bot
+┃⟜❏ /setjeda &lt;time&gt;
+┃      ↳ Mengatur jeda bot
 ┃
 ┃⟜❏ /getsession
-┃      ↳ Mengambil sesi login bot (backup & keamanan BOT)
+┃      ↳ Mengambil sesi login bot
 ┃
-┃⟜❏ /grouponly <on/off>
-┃      ↳ Mengaktifkan mode bot hanya berjalan dalam grup
+┃⟜❏ /grouponly &lt;on/off&gt;
+┃      ↳ Mode bot hanya grup
 ╰━──────────────────────────━❏
-\`\`\``;
-      replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
-    }
-    
-        if (query.data === "tools") {
-      caption = `\`\`\`
-╭━───━⊱ ⊱⪩ 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 ⪨⊰
-┃⟜❏ /ig
-┃      ↳ Download video Instagram
-┃
-┃⟜❏ /tiktok <link>
-┃      ↳ Download video TikTok tanpa watermark
-┃
-┃⟜❏ /tourl <reply photo/video>
-┃      ↳ Convert media menjadi direct URL file
-┃
-┃⟜❏ /cekid
-┃      ↳ Menampilkan ID Telegram kamu & user lain
-┃
-┃⟜❏ /iqc
-┃      ↳ Membuat Gambar kece buat kata kata
-┃
-┃⟜❏ /spotifysearch <judul lagu>
-┃      ↳ Cari lagu, album, dan full metadata Spotify
-┃
-┃⟜❏ /Ai <prompt>
-┃      ↳ Jawaban AI untuk pertanyaan umum + chat
-┃
-┃⟜❏ /gpt <prompt>
-┃      ↳ Mode AI advanced (lebih akurat/intelligent)
-┃
-┃⟜❏ /play <judul>
-┃      ↳ Cari & download audio music otomatis
-┃
-┃⟜❏ /bratvid
-┃      ↳ Get video trend brat aesthetic (short clip)
-┃
-┃⟜❏ /hd <reply image>
-┃      ↳ Upscale foto menjadi kualitas lebih jernih
-┃
-┃⟜❏ /fixcode <script>
-┃      ↳ Perbaikan kode otomatis oleh AI dev-mode
-┃
-┃⟜❏ /rasukbot
-┃      ↳ Buat ambil kendali bot bisa spam ke pemilik bot
-╰━────────────────────────────━❏
-\`\`\``;
-      replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
-    }
-    
-          if (query.data === "tools2") {
-      caption = `\`\`\`
-╭━───━⊱ ⊱⪩ 𝗢𝗦𝗜𝗡𝗧 𝗠𝗘𝗡𝗨 ⪨⊰
-┃⟜❏ /trackipcyber <ip>
-┃      ↳ Melacak lokasi IP, negara, kota, ISP & timezone
-┃
-┃⟜❏ /doxipcyber <ip>
-┃      ↳ Sama seperti trackipcyber (alias cepat)
-┃
-┃⟜❏ /whois <domain>
-┃      ↳ Informasi pendaftar domain, registrar, NS record
-┃
-┃⟜❏ /reversedns <ip>
-┃      ↳ Melihat domain yang terhubung ke sebuah IP
-┃
-┃⟜❏ /finger <url>
-┃      ↳ Deteksi teknologi website (server, framework, header)
-┃
-┃⟜❏ /subdomain <domain>
-┃      ↳ Menemukan subdomain via OSINT (passive enumeration)
-┃
-┃⟜❏ /negarainfo
-┃      ↳ Info negara, mata uang, populasi, ibu kota (OSINT geografi)
-┃
-┃⟜❏ /ssweb <url>
-┃      ↳ Screenshot website & kirim hasilnya (visual intel)
-╰━─────────────────━❏
-\`\`\``;
-      replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
-    }
-      
-    if (query.data === "thanksto") {
-      caption = `\`\`\`
-╭━───━⊱ ⊱⪩ 𝙏𝙃𝘼𝙉𝙆𝙎 𝙏𝙊 𝘼𝙇𝙇 ⪨⊰
-┃ Ryoo — Lead Developer
-┃      ↳ Pencipta sistem bot, konsep, dan arsitektur utama
-┃
-┃ Ryoo — Owner & Maintainer
-┃      ↳ Pemegang kendali penuh pengembangan, patch, update fitur
-┃
-┃ Patner & Support Team
-┃      ↳ Kontributor ide, test build, error trace, debugging
-┃
-┃ Buyer, User, & Community
-┃      ↳ Alasan project ini terus hidup dan berkembang 
-╰━─────────────────────────━❏
-\`\`\``;
+</pre>`;
       replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
     }
 
+    // ================== TOOLS SINGLE ==================
+    if (query.data === "tools") {
+      caption = `
+<pre>
+╭━───━⊱ ⊱⪩ 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 ⪨⊰
+┃⟜❏ /ig
+┃      ↳ Download video IG
+┃
+┃⟜❏ /tiktok &lt;link&gt;
+┃      ↳ Download TikTok no wm
+┃
+┃⟜❏ /tourl &lt;reply photo/video&gt;
+┃      ↳ Convert media ke URL
+┃
+┃⟜❏ /cekid
+┃      ↳ Lihat ID kamu
+┃
+┃⟜❏ /iqc
+┃      ↳ Generate gambar aesthetic
+┃
+┃⟜❏ /spotifysearch &lt;judul lagu&gt;
+┃      ↳ Cari lagu Spotify
+┃
+┃⟜❏ /Ai &lt;prompt&gt;
+┃      ↳ Chat AI
+┃
+┃⟜❏ /gpt &lt;prompt&gt;
+┃      ↳ Mode AI advanced
+┃
+┃⟜❏ /play &lt;judul&gt;
+┃      ↳ Cari & download music
+┃
+┃⟜❏ /bratvid
+┃      ↳ Video brat trend
+┃
+┃⟜❏ /hd &lt;reply image&gt;
+┃      ↳ Upscale foto
+┃
+┃⟜❏ /fixcode &lt;script&gt;
+┃      ↳ Perbaikan kode AI
+┃
+┃⟜❏ /rasukbot
+┃      ↳ Mode eksperimen bot
+╰━────────────────────────────━❏
+</pre>`;
+      replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
+    }
+
+    // ================== TOOLS 2 OSINT ==================
+    if (query.data === "tools2") {
+      caption = `
+<pre>
+╭━───━⊱ ⊱⪩ 𝗢𝗦𝗜𝗡𝗧 𝗠𝗘𝗡𝗨 ⪨⊰
+┃⟜❏ /trackipcyber &lt;ip&gt;
+┃      ↳ Info lokasi IP
+┃
+┃⟜❏ /doxipcyber &lt;ip&gt;
+┃      ↳ Alias cepat IP info
+┃
+┃⟜❏ /whois &lt;domain&gt;
+┃      ↳ Info registrar domain
+┃
+┃⟜❏ /reversedns &lt;ip&gt;
+┃      ↳ Cek domain terhubung
+┃
+┃⟜❏ /finger &lt;url&gt;
+┃      ↳ Deteksi teknologi website
+┃
+┃⟜❏ /subdomain &lt;domain&gt;
+┃      ↳ Enum subdomain
+┃
+┃⟜❏ /negarainfo
+┃      ↳ Info negara lengkap
+┃
+┃⟜❏ /ssweb &lt;url&gt;
+┃      ↳ Screenshot website
+╰━─────────────────━❏
+</pre>`;
+      replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
+    }
+
+    // ================== THANKS TO ==================
+    if (query.data === "thanksto") {
+      caption = `
+<pre>
+╭━───━⊱ ⊱⪩ 𝙏𝙃𝘼𝙉𝙆𝙎 𝙏𝙊 𝘼𝙇𝙇 ⪨⊰
+┃ Ryoo — Lead Developer
+┃      ↳ Konsep & Arsitektur utama
+┃
+┃ Ryoo — Owner & Maintainer
+┃      ↳ Patch, update, maintain
+┃
+┃ Partner & Support Team
+┃      ↳ Testing, debugging
+┃
+┃ Buyer, User, Community
+┃      ↳ Reason project hidup
+╰━─────────────────────────━❏
+</pre>`;
+      replyMarkup = { inline_keyboard: [[{ text: "↩ Back", callback_data: "back" }]] };
+    }
+
+    // ================== BACK ==================
     if (query.data === "back") {
-caption = `<pre>☾⟟☽━━⬥━━ VALTIX INVICTA ━━⬥━━☾⟟☽</pre>
+caption = `
+<pre>☾⟟☽━━⬥━━ VALTIX INVICTA ━━⬥━━☾⟟☽</pre>
 
 𝗢𝗹𝗮!🕊 ${username} — 𝗪𝗲𝗹𝗰𝗼𝗺𝗲
 <i>アクセスが許可されました。システムはあなたの主要ルートを準備しています。</i>
 
 ╭━───━⊱ 𝙋𝙍𝙊𝙅𝙀𝘾𝙏 𝘿𝘼𝙏𝘼 ⊰━───━╮
-┃⟜❏ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫     : RyoNotDev
-┃⟜❏ 𝐎𝐰𝐧𝐞𝐫 𝐃𝐞𝐯    : @Thaureyo
-┃⟜❏ 𝐕𝐞𝐫𝐬𝐢𝐨𝐧       : 1.0
+┃⟜❏ Developer : RyoNotDev
+┃⟜❏ Owner Dev : @Thaureyo
+┃⟜❏ Version    : 1.0
 ╰━───────╯
 
 ╭━───━⊱ 𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝙏𝙄𝙊𝙉 ⊰───━╮
-┃⟜❏ 𝐑𝐮𝐧𝐭𝐢𝐦𝐞    : ${bokepjepang}
-┃⟜❏ 𝐃𝐚𝐭𝐞        : ${jidat}
+┃⟜❏ Runtime : ${bokepjepang}
+┃⟜❏ Date    : ${jidat}
 ╰━───────╯
 
 ╭━─━─━─━─━─━╮
 ┃  𝐏𝐫𝐞𝐬𝐬 𝐁𝐮𝐭𝐭𝐨𝐧 𝐌𝐞𝐧𝐮
 ╰━─━─━─━─━─━╯
 
-<i>作業は完了しました。必要に応じて続行してください。</i>`;
+<i>作業は完了しました。必要に応じて続行してください。</i>
+`;
+
       replyMarkup = {
-      inline_keyboard: [
-        [{ text: "⊱ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ⊰", callback_data: "ownmenu" }, { text: "𝗔𝘁𝘁𝗮𝗰𝗸 ⊰", callback_data: "bug" }],
-        [{ text: "⊱ 𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂 ⊰", callback_data: "tools" },  { text: "𝗠𝘆 𝗧𝗲𝗮𝗺 ⊰", callback_data: "thanksto" }],
-        [{ text: "⊱ 𝗢𝗦𝗜𝗡𝗧 ⊰", callback_data: "tools2" }],
-      ]
+        inline_keyboard: [
+          [
+            { text: "𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂", callback_data: "ownmenu" },
+            { text: "𝗔𝘁𝘁𝗮𝗰𝗸", callback_data: "bug" }
+          ],
+          [
+            { text: "𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂", callback_data: "tools" },
+            { text: "𝗠𝘆 𝗧𝗲𝗮𝗺", callback_data: "thanksto" }
+          ],
+          [
+            { text: "𝗢𝗦𝗜𝗡𝗧", callback_data: "tools2" }
+          ]
+        ]
       };
     }
 
+    // ================== EDIT MEDIA ==================
     await bot.editMessageMedia(
       {
         type: "video",
-        media:  "https://files.catbox.moe/p2jg7w.mp4",
-        
+        media: "https://files.catbox.moe/p2jg7w.mp4",
         caption: caption,
         parse_mode: "HTML"
       },
@@ -1630,7 +1651,8 @@ caption = `<pre>☾⟟☽━━⬥━━ VALTIX INVICTA ━━⬥━━☾⟟☽
   } catch (error) {
     console.error("Error handling callback query:", error);
   }
-});  
+});
+
 //=======CASE BUG=========//
 bot.onText(/\/vtxCrashInject (\d+)/, async (msg, match) => {
     const chatId = msg.chat.id;
