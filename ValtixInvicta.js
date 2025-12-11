@@ -1325,7 +1325,7 @@ bot.onText(/\/menu/, async (msg) => {
   const bokepjepang = getBotRuntime();
   const jidat = getCurrentDate();
   const randomImage = getRandomImage();
-  const version = "3.0";
+  const version = "4.0";
 
   // CEK PREMIUM
   if (!premiumUsers.some(user => user.id === userId && new Date(user.expiresAt) > new Date())) {
@@ -1355,7 +1355,7 @@ await bot.sendVideo(
 ╭━───━⊱ 𝙋𝙍𝙊𝙅𝙀𝘾𝙏 𝘿𝘼𝙏𝘼 ⊰━───━╮
 ┃⟜❏ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫     : RyoNotDev
 ┃⟜❏ 𝐎𝐰𝐧𝐞𝐫 𝐃𝐞𝐯    : @Thaureyo
-┃⟜❏ 𝐕𝐞𝐫𝐬𝐢𝐨𝐧       : 1.0
+┃⟜❏ 𝐕𝐞𝐫𝐬𝐢𝐨𝐧       : 4.0
 ╰━───────╯
 
 ╭━───━⊱ 𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝙏𝙄𝙊𝙉 ⊰───━╮
@@ -1412,7 +1412,7 @@ bot.on("callback_query", async (query) => {
     const premiumStatus = getPremiumStatus(query.from.id);
     const jidat = getCurrentDate();
     const randomImage = getRandomImage();
-    const version = '3.0';
+    const version = '4.0';
     const developer = 'Butterfly';
 
     let caption = "";
@@ -1589,7 +1589,7 @@ caption = `<pre>☾⟟☽━━⬥━━ VALTIX INVICTA ━━⬥━━☾⟟☽
 ╭━───━⊱ 𝙋𝙍𝙊𝙅𝙀𝘾𝙏 𝘿𝘼𝙏𝘼 ⊰━───━╮
 ┃⟜❏ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫     : RyoNotDev
 ┃⟜❏ 𝐎𝐰𝐧𝐞𝐫 𝐃𝐞𝐯    : @Thaureyo
-┃⟜❏ 𝐕𝐞𝐫𝐬𝐢𝐨𝐧       : 1.0
+┃⟜❏ 𝐕𝐞𝐫𝐬𝐢𝐨𝐧       : 4.0
 ╰━───────╯
 
 ╭━───━⊱ 𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝙏𝙄𝙊𝙉 ⊰───━╮
@@ -3447,3 +3447,4 @@ setTimeout(async () => {
 
 console.log(chalk.green("✅ Update System aktif! Auto-check setiap 30 menit."));
 // ===== END AUTO UPDATE CHECKER =====
+
