@@ -152,45 +152,23 @@ function watchFile(filePath, updateCallback) {
 watchFile('./犬/premium.json', (data) => (premiumUsers = data));
 watchFile('./犬/admin.json', (data) => (adminUsers = data));
 
-const chalk = require("chalk"); //
-const config = require("./config.js");
-// =========================================
-// AUTO INSTALL MODULE + KUMIS WARNA-WARNI
-// =========================================
 import { execSync } from "child_process";
-import fs from "fs";
 
 function ensure(moduleName) {
-  try {
-    require.resolve(moduleName);
-  } catch {
-    execSync(`npm install ${moduleName}`, { stdio: "ignore" });
-  }
+  try { require.resolve(moduleName); }
+  catch { execSync(`npm install ${moduleName}`, { stdio: "ignore" }); }
 }
 
-ensure("chalk");
 ensure("gradient-string");
 
-import chalk from "chalk";
-import gradient from "gradient-string";
-
-function startBot() {
-  const art = `
-  ⠀⢀⣠⣄⡀⠀⠀⠀⣠⣶⣾⣿⣿⣶⣦⣴⣾⣿⣿⣷⣦⣄⠀⠀⠀⢀⣠⣄⡀⠀
-  ⣰⣿⠟⠛⢻⡆⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣷⡄⢰⠟⠛⢻⣿⡆
-  ⢻⣿⣦⣀⣤⣾⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣦⣤⣀⣼⣿⡇
-  ⠀⠛⠿⢿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⢿⣿⣿⡿⠿⠋
-  `;
-
-  console.log(gradient.rainbow.multiline(art));
-}
-
-startBot();
-// =========================================
+const chalk = require("chalk");
+const config = require("./config.js");
 const TelegramBot = require("node-telegram-bot-api");
 const axios = require("axios");
+
 const BOT_TOKEN = config.BOT_TOKEN;
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+
 // ===== UPDATE SYSTEM - NO BACKUP =====
 const https = require("https");
 
@@ -229,6 +207,19 @@ console.log(chalk.green('# Token aman lanjut aja,gw pantau   '));
 }
 
 
+startBot();
+
+function startBot() {
+  const art = `
+⠀⢀⣠⣄⡀⠀⠀⠀⣠⣶⣾⣿⣿⣶⣦⣴⣾⣿⣿⣷⣦⣄⠀⠀⠀⢀⣠⣄⡀⠀
+⣰⣿⠟⠛⢻⡆⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣷⡄⢰⠟⠛⢻⣿⡆
+⢻⣿⣦⣀⣤⣾⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣦⣤⣀⣼⣿⡇
+⠀⠛⠿⢿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⢿⣿⣿⡿⠿⠋⠀
+`;
+
+  const gradient = require("gradient-string");
+  console.log(gradient.rainbow.multiline(art));
+}
 
 
 validateToken();
@@ -1395,15 +1386,15 @@ await bot.sendVideo(
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂", callback_data: "ownmenu" },
-          { text: "𝗔𝘁𝘁𝗮𝗰𝗸", callback_data: "bug" }
+          { text: "⊱ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ⊰", callback_data: "ownmenu" },
+          { text: "⊱ 𝗔𝘁𝘁𝗮𝗰𝗸 𝗠𝗲𝗻𝘂 ⊰", callback_data: "bug" }
         ],
         [
-          { text: "𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂", callback_data: "tools" },
-          { text: "𝗠𝘆 𝗧𝗲𝗮𝗺", callback_data: "thanksto" }
+          { text: "⊱ 𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂 ⊰", callback_data: "tools" },
+          { text: "⊱ 𝗠𝘆 𝗧𝗲𝗮𝗺 ⊰", callback_data: "thanksto" }
         ],
         [
-          { text: "𝗢𝗦𝗜𝗡𝗧", callback_data: "tools2" }
+          { text: "⊱ 𝗢𝗦𝗜𝗡𝗧 ⊰", callback_data: "tools2" }
         ]
       ]
     }
@@ -1639,16 +1630,16 @@ caption = `
       replyMarkup = {
         inline_keyboard: [
           [
-            { text: "𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂", callback_data: "ownmenu" },
-            { text: "𝗔𝘁𝘁𝗮𝗰𝗸", callback_data: "bug" }
-          ],
-          [
-            { text: "𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂", callback_data: "tools" },
-            { text: "𝗠𝘆 𝗧𝗲𝗮𝗺", callback_data: "thanksto" }
-          ],
-          [
-            { text: "𝗢𝗦𝗜𝗡𝗧", callback_data: "tools2" }
-          ]
+          { text: "⊱ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ⊰", callback_data: "ownmenu" },
+          { text: "⊱ 𝗔𝘁𝘁𝗮𝗰𝗸 𝗠𝗲𝗻𝘂 ⊰", callback_data: "bug" }
+        ],
+        [
+          { text: "⊱ 𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂 ⊰", callback_data: "tools" },
+          { text: "⊱ 𝗠𝘆 𝗧𝗲𝗮𝗺 ⊰", callback_data: "thanksto" }
+        ],
+        [
+          { text: "⊱ 𝗢𝗦𝗜𝗡𝗧 ⊰", callback_data: "tools2" }
+        ]
         ]
       };
     }
