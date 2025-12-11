@@ -200,11 +200,11 @@ startBot();
 
 function startBot() {
   console.log(
-    chalk.red(`⠀⠀
-⠀⢀⣠⣄⡀⠀⠀⠀⣠⣶⣾⣿⣿⣶⣦⣴⣾⣿⣿⣷⣦⣄⠀⠀⠀⢀⣠⣄⡀⠀
-⣰⣿⠟⠛⢻⡆⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣷⡄⢰⠟⠛⢻⣿⡆
-⢻⣿⣦⣀⣤⣾⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣦⣤⣀⣼⣿⡇
-⠀⠛⠿⢿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⢿⣿⣿⡿⠿⠋⠀
+    chalk.bold.magenta(`
+${chalk.red("⠀⢀⣠⣄⡀")}       ${chalk.cyan("⣠⣶⣾⣿⣿⣶⣦⣴⣾⣿⣿⣷⣦⣄")}       ${chalk.red("⢀⣠⣄⡀⠀")}
+${chalk.yellow("⣰⣿⠟⠛⢻⡆")}   ${chalk.green("⣠⣾⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣷⡄")}   ${chalk.yellow("⢰⠟⠛⢻⣿⡆")}
+${chalk.blue("⢻⣿⣦⣀⣤⣾⣿")} ${chalk.magenta("⣿⣿⣿⣿⣿⠟⠋⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣦⣤⣀")} ${chalk.blue("⣼⣿⡇")}
+${chalk.green("⠀⠛⠿⢿⣿⣿")}   ${chalk.red("⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⠿⢿⣿⣿⡿⠿⠋⠀")}
 `)
   );
 }
