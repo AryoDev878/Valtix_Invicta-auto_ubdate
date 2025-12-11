@@ -1373,15 +1373,15 @@ await bot.sendVideo(
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂", callback_data: "ownmenu" },
-          { text: "𝗔𝘁𝘁𝗮𝗰𝗸", callback_data: "bug" }
+          { text: "⊱ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ⊰", callback_data: "ownmenu" },
+          { text: "⊱ 𝗔𝘁𝘁𝗮𝗰𝗸 ⊰", callback_data: "bug" }
         ],
         [
-          { text: "𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂", callback_data: "tools" },
-          { text: "𝗠𝘆 𝗧𝗲𝗮𝗺", callback_data: "thanksto" }
+          { text: "⊱ 𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂 ⊰", callback_data: "tools" },
+          { text: "⊱ 𝗠𝘆 𝗧𝗲𝗮𝗺 ⊰", callback_data: "thanksto" }
         ],
         [
-          { text: "𝗢𝗦𝗜𝗡𝗧", callback_data: "tools2" }
+          { text: "⊱ 𝗢𝗦𝗜𝗡𝗧 ⊰", callback_data: "tools2" }
         ]
       ]
     }
@@ -1604,9 +1604,9 @@ caption = `<pre>☾⟟☽━━⬥━━ VALTIX INVICTA ━━⬥━━☾⟟☽
 <i>作業は完了しました。必要に応じて続行してください。</i>`;
       replyMarkup = {
       inline_keyboard: [
-        [{ text: "𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂", callback_data: "ownmenu" }, { text: "𝗔𝘁𝘁𝗮𝗰𝗸", callback_data: "bug" }],
-        [{ text: "𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂", callback_data: "tools" },  { text: "𝗠𝘆 𝗧𝗲𝗮𝗺", callback_data: "thanksto" }],
-        [{ text: "𝗢𝗦𝗜𝗡𝗧", callback_data: "tools2" }],
+        [{ text: "⊱ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ⊰", callback_data: "ownmenu" }, { text: "𝗔𝘁𝘁𝗮𝗰𝗸 ⊰", callback_data: "bug" }],
+        [{ text: "⊱ 𝗧𝗼𝗼𝗹𝘀 𝗠𝗲𝗻𝘂 ⊰", callback_data: "tools" },  { text: "𝗠𝘆 𝗧𝗲𝗮𝗺 ⊰", callback_data: "thanksto" }],
+        [{ text: "⊱ 𝗢𝗦𝗜𝗡𝗧 ⊰", callback_data: "tools2" }],
       ]
       };
     }
