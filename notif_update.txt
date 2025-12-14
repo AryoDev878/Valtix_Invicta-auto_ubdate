@@ -1,0 +1,5 @@
+🆕 Update v3.1 baru saja rilis!
+- Tambah mode bug "SilentGhost"
+- Fix error di /tiktok
+- Cooldown lebih stabil
+Ketik /ubdatenew untuk update sekarang.
